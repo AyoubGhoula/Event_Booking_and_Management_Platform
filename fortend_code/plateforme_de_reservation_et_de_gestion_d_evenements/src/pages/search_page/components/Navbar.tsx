@@ -1,8 +1,7 @@
 "use client";
 import { Outlet, Link } from "react-router-dom";
-import { React,useState } from "react";
-import { Menu, X } from "lucide-react";
-import DropdownMenu from "./DropdownMenu";
+import React, { useState } from "react";
+import DropdownMenu from "../../Home/components/DropdownMenu";
 import search_page from "../../search_page/search_page";
 import serche_page from "../../search_page/search_page";
 
@@ -21,7 +20,7 @@ const Navbar = () => {
           <div className="flex items-center flex-shrink-0">
             <img className="h-10 w-10 mr-2" src={""} alt="Logo" />
             <span className="text-xl tracking-tight">EventMaster</span>
-          </div>
+            </div>
           {/* searche bar */}
           <div className="mb-0 xl:w-96">
           <div className="relative mb-0 flex w-full flex-wrap items-stretch">
@@ -63,28 +62,7 @@ const Navbar = () => {
           <div className="flex justify-center items-center h-full ">
           <DropdownMenu />
           </div>
-          <div className="lg:hidden md:flex flex-col justify-end">
-            <button onClick={toggleNavbar}>
-              {mobileDrawerOpen ? <X /> : <Menu />}
-            </button>
           </div>
-        </div>
-        {mobileDrawerOpen && (
-          <div className="fixed right-0 z-20 bg-neutral-900 w-full p-12 flex flex-col justify-center items-center lg:hidden">
-            
-            <div className="flex space-x-6">
-              <a href="" className="py-2 px-3 border rounded-md hover:bg-neutral-700">
-                Sign In
-              </a>
-              <a
-                href="#"
-                className="py-2 px-3 rounded-md bg-gradient-to-r from-blue-500 to-blue-800"
-              >
-                Create an account
-              </a>
-            </div>
-          </div>
-        )}
       </div>
     </nav>
     

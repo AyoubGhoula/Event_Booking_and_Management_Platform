@@ -8,9 +8,7 @@ import Footer from "./components/Footer";
 import Pricing from "./components/Pricing";
 import Testimonials from "./components/Testimonials";
 
-const changeColor = () => {
-    setBgColor(bgColor === 'bg-blue-500' ? 'bg-green-500' : 'bg-blue-500');
-  };
+
 const App = () => {
   
   return (
@@ -20,7 +18,7 @@ const App = () => {
         <HeroSection></HeroSection>
         <Footer></Footer>
        </div>
-      {/*  <HeroSection />
+      {/*  <HeroSection   />
         <FeatureSection />
         <Workflow />
         <Pricing />

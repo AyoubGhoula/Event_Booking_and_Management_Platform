@@ -1,21 +1,23 @@
 // import video1 from "../../public/vide
 // import video2 from "../assets/video2.mp4";
-
+// import serche_page from "../../search_page/search_page";
 const HeroSection = () => {
   return (
     <>
-    <div className="flex flex-col items-center mt-6 lg:mt-20">
-      <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide">
+    
+      <h1 className="text-7xl md:text-6xl lg:text-12xl font-bold text-center mb-8">
       Bienvenue sur 
-        <span className="bg-gradient-to-r from-blue-500 to-blue-800 text-transparent bg-clip-text">
+        <span className="bg-gradient-to-r from-blue-500 to-blue-800 text-transparent bg-clip-text text-gradient">
           {" "}
           EventMaster
         </span>
       </h1>
-      <p className="mt-10 text-lg text-center text-neutral-500 max-w-4xl">
+      <p className="text-center md:text-lg lg:text-xl leading-8 text-gray-800 dark:text-gray-300">
       Découvrez et réservez des événements passionnants près de chez vous !
       </p>
-      <main className="mt-10 text-lg text-center text-neutral-400 max-w-4x">
+      
+      <div className="flex flex-col items-center mt-6 lg:mt-10">
+      <div className="mt-10 text-lg text-center text-neutral-400 max-w-4x">
         <section className="mb-8 pt-8">
           <h2 className="text-2xl font-bold mb-4">Explorez Nos Événements</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -37,7 +39,19 @@ const HeroSection = () => {
             </div>
           </div>
         </section>
-
+        {/* searche bar */}
+      <form class="max-w-md mx-auto md-12 " >   
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
+        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+          </form>
         <section className="mb-8 pt-20">
           <h2 className="text-2xl font-bold mb-4">Fonctionnalités Clés</h2>
           <div className="bg-black p-4 rounded shadow mb-4">
@@ -103,7 +117,7 @@ const HeroSection = () => {
             <p>"Je recommande vivement EventMaster pour sa grande variété d'événements et son interface conviviale." - <strong>Jean</strong></p>
           </blockquote>
         </section>
-      </main>
+      </div>
       <div className="flex justify-center my-10">
         <a
           href="#"
@@ -116,19 +130,7 @@ const HeroSection = () => {
         </a>
       </div>
 </div>
-      {/* searche bar */}
-      <form class="max-w-md mx-auto md-12 ">   
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-        </div>
-        <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
-        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-    </div>
-          </form>
+      
 </>        
   );
 };
