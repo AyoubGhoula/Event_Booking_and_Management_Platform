@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Profile from '../../profile_page/profile';
 
 const DropdownMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setShowProfile(false);
       }
     };
 
@@ -19,22 +22,29 @@ const DropdownMenu: React.FC = () => {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+    setShowProfile(false);
+  };
+
+  const handleAccountSettingsClick = () => {
+    setShowProfile(true);
+    setIsOpen(false); // Close the dropdown when showing the profile
   };
 
   return (
+    <>
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <div>
         <button
           type="button"
           onClick={toggleDropdown}
         >
-          <div className="w-9 h-9 border-gray-300 border rounded-full ">
+          <div className="w-9 h-9 border-gray-300 border rounded-full">
             <img
-                src={""}
-                alt={"profile"}
-                className="w-full h-full rounded-full object-cover"
+              src={""}
+              alt={"profile"}
+              className="w-full h-full rounded-full object-cover"
             />
-        </div>
+          </div>
         </button>
       </div>
 
@@ -47,22 +57,21 @@ const DropdownMenu: React.FC = () => {
         >
           <div className="py-1" role="none">
             <a
-              href="#"
-              className=" block px-4 py-2 text-sm hover:bg-blue-700"
-              role="menuitem"
+              className="block px-4 py-2 text-sm hover:bg-blue-700 cursor-pointer"
+              onClick={handleAccountSettingsClick}
             >
               Account settings
             </a>
             <a
               href="#"
-              className=" block px-4 py-2 text-sm hover:bg-blue-700"
+              className="block px-4 py-2 text-sm hover:bg-blue-700"
               role="menuitem"
             >
               Support
             </a>
             <a
               href="#"
-              className=" block px-4 py-2 text-sm hover:bg-blue-700"
+              className="block px-4 py-2 text-sm hover:bg-blue-700"
               role="menuitem"
             >
               License
@@ -70,7 +79,7 @@ const DropdownMenu: React.FC = () => {
             <form method="POST" action="#" role="none">
               <button
                 type="submit"
-                className=" block w-full text-left px-4 py-2 text-sm hover:bg-blue-700"
+                className="block w-full text-left px-4 py-2 text-sm hover:bg-blue-700"
                 role="menuitem"
               >
                 Sign out
@@ -79,7 +88,14 @@ const DropdownMenu: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+
+      {showProfile && (
+        <div className="absolute right-1 mt-4  w-96  ">
+          <Profile />
+        </div>
+      )}
+      </div>
+    </>
   );
 };
 

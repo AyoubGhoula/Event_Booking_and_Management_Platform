@@ -3,7 +3,6 @@ import { Outlet, Link } from "react-router-dom";
 import { React,useState } from "react";
 import { Menu, X } from "lucide-react";
 import DropdownMenu from "./DropdownMenu";
-import search_page from "../../search_page/search_page";
 import serche_page from "../../search_page/search_page";
 
 const Navbar = () => {
