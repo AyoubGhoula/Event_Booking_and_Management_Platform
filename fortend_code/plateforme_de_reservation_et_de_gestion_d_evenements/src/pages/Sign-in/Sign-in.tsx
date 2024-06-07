@@ -14,8 +14,6 @@ export default function Example() {
       });
       console.log(response.data);
       alert('You have been logged in successfully');
-      // go home page
-      router.push("/")
       localStorage.setItem('token', response.data.access_token);
     } catch (error) {
       console.error(error);
