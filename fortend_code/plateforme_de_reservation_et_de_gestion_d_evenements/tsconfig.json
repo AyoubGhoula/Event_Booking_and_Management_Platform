@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext" , "Decorators"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/Home/components/Footer.jsx", "src/pages/Home/Home.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/Home/components/Footer.jsx", "src/app/Home/page.tsx"],
   "exclude": ["node_modules"]
 }
