@@ -17,10 +17,14 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            $table->integer("nm_tele");
+            $table->string('phone')->nullable();
             $table->string("payer");
             $table->string("photo_profile");
-            
+            $table->string('avatar')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('address')->nullable();
+            $table->string('role')->default('user');
+            $table->boolean('is_verified_role_organizations')->default(false);
         });
     }
 
@@ -32,3 +36,4 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
+

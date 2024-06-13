@@ -32,7 +32,7 @@ const DropdownMenu: React.FC = () => {
 
   return (
     <>
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className="relative inline-block text-left hidden lg:block" ref={dropdownRef}>
       <div>
         <button
           type="button"

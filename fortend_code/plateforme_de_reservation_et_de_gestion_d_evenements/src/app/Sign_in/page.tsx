@@ -8,6 +8,7 @@ export default function Example() {
   const [password, setPassword] = useState(''); 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
+    
     try {
       const response = await axios.post('http://localhost:8000/api/login', {
         email,

@@ -23,7 +23,7 @@ const Navbar = () => {
             <span className="text-xl tracking-tight">EventMaster</span>
             </div>
             {/* searche bar */}
-            <div className="mb-0 xl:w-auto mx-auto">
+            <div className="mb-0 xl:w-auto mx-auto hidden sm:block">
             <div className="relative mb-0 flex w-full flex-wrap items-stretch">
             <form method="post" action={serche_page}>
             <input
