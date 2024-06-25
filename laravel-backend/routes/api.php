@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('register/user', [AuthController::class, 'register']);
+Route::post('register', [AuthController::class, 'register']);
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -27,7 +27,8 @@ Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logou
 
 Route::middleware('auth:sanctum')->get('user/events', [AuthController::class, 'userEvents']);
 
-
-
 Route::middleware('auth:sanctum')->post('add_events', [AuthController::class, 'createEvent']);
 
+Route::middleware('auth:sanctum')->post('editEvents/{id}', [AuthController::class, 'update']);
+
+Route::middleware('auth:sanctum')->delete('/deleteEvent/{id}', [AuthController::class, 'deleteEvent']);

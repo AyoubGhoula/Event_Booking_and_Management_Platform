@@ -85,10 +85,10 @@ const HeroSection = () => {
         <div className="flex items-center justify-center  mb-4 rounded bg-gray-50 dark:bg-gray-800 pt-2 sm:mt-8 sm:mb-4 sm:justify-between">
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Comment ça Marche ?</h2>
-          <div className="grid grid-cols-1 gap-4 mb-4 my-4 pt-4 sm:grid-cols-3 sm: py-4">
+          <div className="grid grid-cols-1 gap-4 mb-4 my-2 pt-4  sm:grid-cols-3 sm: py-5">
           <p className="text-2xl text-gray-400 dark:text-gray-500"><span className="font-bold">1. Explorez :</span> Parcourez notre catalogue d'événements.</p>
           <p className="text-2xl text-gray-400 dark:text-gray-500"><span className="font-bold">2. Réservez :</span> Réservez vos billets en quelques clics.</p>
-          <p className="text-2xl text-gray-400 dark:text-gray-500"><span className="font-bold">3. Profitez :</span> Assistez à l'événement et vivez une expérience inoubliable.</p>
+          <p className="text-2xl text-gray-400 dark:text-gray-500 ml-1"><span className="font-bold">3. Profitez :</span> Assistez à l'événement et vivez une expérience inoubliable.</p>
             </div>
         </section>
         </div>

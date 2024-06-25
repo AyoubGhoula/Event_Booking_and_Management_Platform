@@ -20,6 +20,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'payer',
+        'phone',
+        'date_of_birth',
+        'address',
     ];
 
     /**
@@ -38,12 +42,17 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        // 'email_verified' => 'datetime',
         'password' => 'hashed',
     ];
 
+    public function eventsCreated()
+    {
+        return $this->hasMany(events::class, 'created_by');
+    }
+
     public function events()
     {
-        return $this->hasMany(events::class);
+        return $this->belongsToMany(events::class, 'event_user');
     }
 }

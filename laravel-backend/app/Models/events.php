@@ -14,12 +14,29 @@ class events extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name'
+        'name', 'start_datetime', 'lient_event', 'prix', 'created_by', 'nm_max', 'nm_participer', 'gender',
     ];
-    public function user()
+    public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    protected $appends = [
+        'creator_name', 'creator_email',
+    ];
+    
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'event_user');
+    }
+    public function getCreatorNameAttribute()
+    {
+        return $this->creator ? $this->creator->name : null;
     }
 
+    // Accessor for creator email
+    public function getCreatorEmailAttribute()
+    {
+        return $this->creator ? $this->creator->email : null;
+    }
 
 }

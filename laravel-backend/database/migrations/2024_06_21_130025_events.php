@@ -15,7 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->timestamps();
-            $table->datetime('start_datetime')->nullable();
+            $table->datetime('start_datetime');
+            $table->string('lient_event');
+            $table->integer("prix")->default(0);
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->integer("nm_max");
+            $table->integer("nm_participer")->default(0);
+            $table->string("gender")->default("-");
         });
     }
 
@@ -27,5 +33,4 @@ return new class extends Migration
         Schema::dropIfExists('events');
     }
 };
-
 
