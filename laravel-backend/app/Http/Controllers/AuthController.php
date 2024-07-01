@@ -9,30 +9,34 @@ use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
+    public function register(Request $request) {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'payer'=> 'required|string|max:255',
-            'phone'=>'required|string|max:14',
-            'date_of_birth'=>'required|date',
-            'address'=>'required|string|max:255',
-
+            'phone' => 'nullable|string|max:15',
+            'payer' => 'required|string',
+            'avatar' => 'nullable|file|image|max:2048',
+            'date_of_birth' => 'nullable|date',
+            'address' => 'nullable|string|max:255',
+            'role' => 'required|string|in:user,admin'
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'payer'=> $request->payer,
-            'phone'=>$request->phone,
-            'date_of_birth'=>$request->date_of_birth,
-            'address'=>$request->address,
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->phone = $request->phone;
+        $user->payer = $request->payer;
+        if ($request->hasFile('avatar')) {
+            $user->avatar = $request->file('avatar')->store('avatars', 'public');
+        }
+        $user->date_of_birth = $request->date_of_birth;
+        $user->address = $request->address;
+        $user->role = $request->role;
+        $user->save();
 
-        return response()->json(['message' => 'User registered successfully!'], 201);
+        return response()->json(['message' => 'User registered successfully'], 201);
     }
 
     public function login(Request $request)
@@ -65,6 +69,12 @@ class AuthController extends Controller
 
         return response()->json($events);
     }
+    public function getAllUser()
+{
+    $users = User::all();
+
+    return response()->json($users);
+}
 
 
 
@@ -77,6 +87,7 @@ class AuthController extends Controller
         $events = $user->eventsCreated;
 
         return response()->json($events);
+
     }
 
 
@@ -152,9 +163,64 @@ class AuthController extends Controller
             }
         }
 
+        public function deleteUser($id)
+        {
+            $user=user::find($id);
+            if(!$user){
+                return response()->json(['message'=>'user not found'],404);
+            }
+
+            try {
+                $user->delete();
+                return response()->json(['message'=>'User deleted successfully'],200);
+            }catch (\Exception $e){
+                return response()->json(['message'=>'Failed to delete User','error' =>$e->getMessage()],400);
+            }
+        }
+
+        public function getUser()
+    {
+        $user = Auth::user();
+
+        $user->avatar = $user->avatar ? asset('storage/avatars/' . $user->avatar) : null;
+
+        return response()->json($user);
+    }
 
 
+     public function getevents()
+     {
+
+        $events = events::all();
+        return response()->json($events);
+
+     }
+
+     public function search(Request $request)
+     {
+         $query = $request->input('query');
+
+         if ($query) {
+             $events = events::where('name', 'LIKE', "%{$query}%")->get();
+         } else {
+             $events = events::all();
+         }
+
+         return response()->json($events);
+     }
 
 
+     public function getCounts()
+     {
+        $userCount = user::count();
+        $organizerCount = user::where('role', 'Organizer')->count();
+        $eventCount = events::count();
+
+        return response()->json([
+            'userCount' => $userCount,
+            'organizerCount' => $organizerCount,
+            'eventCount' => $eventCount,
+        ]);
+    }
 
 }

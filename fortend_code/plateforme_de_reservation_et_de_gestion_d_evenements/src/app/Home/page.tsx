@@ -17,13 +17,6 @@ const App = () => {
         <Footer></Footer>
        </div>
     </div>
-      {/*  <HeroSection   />
-        <FeatureSection />
-        <Workflow />
-        <Pricing />
-        <Testimonials />
-        <Footer /> */}
-      {/* </div> */}
     </>
   );
 };

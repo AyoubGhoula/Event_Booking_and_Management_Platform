@@ -1,11 +1,18 @@
 "use client";
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from "next/router";
 
 export default function Example() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); 
+  const [password, setPassword] = useState('');
+  const [isMounted, setIsMounted] = useState(false); 
+ 
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const handleSubmit = async (e:any) => {
     e.preventDefault();
     
@@ -17,10 +24,12 @@ export default function Example() {
       console.log(response.data);
       alert('You have been logged in successfully');
       localStorage.setItem('token', response.data.access_token);
-    } catch (error) {
-      console.error(error);
+        window.location.href = '/Home';
+    } catch (err) {
+      alert("Invalid email or password");
     }
-  }; 
+  };
+
   return (
     <>
       <section className="bg-white dark:bg-gray-900">

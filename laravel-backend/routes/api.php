@@ -14,9 +14,7 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->get('/getAllUser',[AuthController::class, 'getAllUser']);
 
 
 Route::post('register', [AuthController::class, 'register']);
@@ -32,3 +30,16 @@ Route::middleware('auth:sanctum')->post('add_events', [AuthController::class, 'c
 Route::middleware('auth:sanctum')->post('editEvents/{id}', [AuthController::class, 'update']);
 
 Route::middleware('auth:sanctum')->delete('/deleteEvent/{id}', [AuthController::class, 'deleteEvent']);
+
+Route::middleware('auth:sanctum')->get('/user',[AuthController::class, 'getUser'] );
+
+Route::get('/allevents', [AuthController::class, 'getevents']);
+
+Route::get('/search-events', [AuthController::class, 'search']);
+
+Route::get('/users',[AuthController::class,'getUsers']);
+
+Route::middleware('auth:sanctum')->delete('/deleteUser/{id}', [AuthController::class, 'deleteUser']);
+
+Route::middleware('auth:sanctum')->get('/getCountsForAdmin',[AuthController::class, 'getCounts']);
+

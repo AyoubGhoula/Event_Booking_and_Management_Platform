@@ -3,7 +3,7 @@
 
 // import serche_page from "../../search_page/search_page";
 import { useRouter } from 'next/navigation';
-
+import Link from 'next/link';
 const HeroSection = () => {
   const router = useRouter();
   
@@ -48,7 +48,18 @@ const HeroSection = () => {
             </div>
           </div>
         </section>
-        {/* searche bar */}
+        <div className="flex justify-center my-10">
+        <Link
+          href="event"
+          className="bg-gradient-to-r text-white from-blue-500 to-blue-800 py-3 px-4 mx-3 rounded-md"
+        >
+          Participate in Event
+        </Link>
+        <Link href="#" className="py-3 px-7 mx-3  text-white rounded-md border hover:border-blue-500">
+        My Events
+        </Link>
+      </div>
+        {/* searche bar
       <form className="max-w-md mx-auto md-12 pb-14 " onSubmit={searchPageFunction}  methode="post">   
     <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div className="relative">
@@ -60,7 +71,7 @@ const HeroSection = () => {
         <input type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
         <button type="submit"  className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
     </div>
-          </form>
+          </form> */}
 
 
 
@@ -105,15 +116,15 @@ const HeroSection = () => {
         </section>
       </div>
       <div className="flex justify-center my-10">
-        <a
-          href="#"
-          className="bg-gradient-to-r from-blue-500 to-blue-800 py-3 px-4 mx-3 rounded-md"
+        <Link
+          href="event"
+          className="bg-gradient-to-r text-white from-blue-500 to-blue-800 py-3 px-4 mx-3 rounded-md"
         >
-          Start for free
-        </a>
-        <a href="#" className="py-3 px-4 mx-3 rounded-md border hover:border-blue-500">
-          Documentation
-        </a>
+          Participate in Event
+        </Link>
+        <Link href="#" className="py-3 px-7 mx-3  text-white rounded-md border hover:border-blue-500">
+        My Events
+        </Link>
       </div>
 </div>
 </div>      
