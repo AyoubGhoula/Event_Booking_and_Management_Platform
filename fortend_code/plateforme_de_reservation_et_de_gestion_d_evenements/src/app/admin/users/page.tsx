@@ -11,22 +11,22 @@ interface User {
     name: string;
     email: string;
     role:string;
-    username?: string; // Optional property
-    phone?: string; // Optional property
+    username?: string; 
+    phone?: string; 
     address?: {
       street: string;
       city: string;
       zipcode: string;
-      suite?: string; // Optional property
+      suite?: string; 
     };
-    website?: string; // Optional property
+    website?: string; 
     company?: {
       name: string;
-      catchPhrase?: string; // Optional property
-      bs?: string; // Optional property
+      catchPhrase?: string; 
+      bs?: string; 
     };
-    createdAt?: Date; // Optional property
-    updatedAt?: Date; // Optional property
+    createdAt?: Date; 
+    updatedAt?: Date; 
   }
   
 const admin=()=>{
