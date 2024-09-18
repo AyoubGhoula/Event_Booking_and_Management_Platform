@@ -16,7 +16,7 @@ export default function Example() {
     const [address, setAddress] = useState('');
     const [role, setRole] = useState('user');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:any) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('name', name);

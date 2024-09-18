@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useRouter } from "next/router";
 
@@ -8,7 +8,9 @@ export default function Example() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isMounted, setIsMounted] = useState(false); 
- 
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -29,6 +31,19 @@ export default function Example() {
       alert("Invalid email or password");
     }
   };
+  const handleEmailKeyDown = (event:any) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      passwordRef.current?.focus(); // Move focus to password input
+    }
+  };
+  const handlePasswordKeyDown = (event:any) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSubmit(event); // Submit the form when pressing enter on password input
+    }
+  };
+
 
   return (
     <>
@@ -40,11 +55,11 @@ export default function Example() {
             </div>
             
             <div className="flex items-center justify-center mt-6">
-              <Link href="/Sign_in" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-blue-400 dark:text-blue-300">
+              <Link href="/Sign-in" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-blue-400 dark:text-blue-300">
                   sign in
               </Link>
 
-              <Link href="/Sign_up" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-gray-500 dark:border-gray-400 dark:text-white">
+              <Link href="/Sign-up" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-gray-500 dark:border-gray-400 dark:text-white">
                   sign up
               </Link>
             </div>
@@ -54,7 +69,8 @@ export default function Example() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </span>
-              <input type="email" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} ref={emailRef}
+          onKeyDown={handleEmailKeyDown} />
             </div>
             <div className="relative flex items-center mt-4">
               <span className="absolute">
@@ -62,7 +78,8 @@ export default function Example() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </span>
-              <input type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}  ref={passwordRef}
+          onKeyDown={handlePasswordKeyDown} />
             </div>
             <div className="mt-6">
               <div className="flex space-x-4 justify-center">

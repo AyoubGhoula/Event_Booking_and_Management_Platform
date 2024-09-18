@@ -23,7 +23,6 @@ const admin=()=>{
                       Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
                   }); 
-                console.log(response.data)
                 setCounts(response.data);
             } catch (error) {
                 console.error('Error fetching counts:', error);
@@ -60,7 +59,7 @@ return (
 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" >
    <span className="sr-only">Open sidebar</span>
    <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-   <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+   <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
    </svg>
 </button>
 <div ref={dropdownRef}>
@@ -114,7 +113,7 @@ return (
          <li>
             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
                </svg>
                <span className="flex-1 ms-3 whitespace-nowrap">Sign In</span>
             </a>
@@ -189,7 +188,7 @@ return (
    <li>
       <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
          <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
          </svg>
          <span className="flex-1 ms-3 whitespace-nowrap">Sign In</span>
       </a>
@@ -211,27 +210,215 @@ return (
 </aside>
 
 <div className="p-4 sm:ml-64">
+
    <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg border-gray-700">
       <div className="relative  w-full h-full overflow-x-auto shadow-md sm:rounded-lg mb-4">
       <div className="p-6">
+        
             <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-gray-800 rounded-lg shadow">
+            <div className="grid grid-cols-1 gap-1 lg:grid-cols-2">
+            <div className="flex items-center justify-center h-50 rounded bg-gray-800 border border-gray-700">
+           
+            <div className="p-4 text-gray-400 rounded shadow-md mb-4">
+      <h1 className="text-2xl font-bold mb-2">Welcome to the Admin Dashboard</h1>
+      <p className="text-gray-500">
+        Here you can manage all aspects of the platform including users, organizers and events  <br/> Use the navigation bar on the left to access different sections of the dashboard. Stay up-to-date with the latest activities and make informed decisions to keep the platform running smoothly.
+      </p>
+    </div>
+      
+         </div>
+         <div className="grid grid-cols-2 gap-4 mx-4 lg: my-4">
+            <Link href="users">
+                <div className="p-4 bg-gray-800 rounded-lg shadow  border border-gray-700 hover:border-blue-700 hover:border-blue-500">
+
                     <h2 className="text-xl text-gary-600 font-bold mb-2">Users</h2>
                     <p className="text-3xl font-bold text-gray-50">{counts.userCount}</p>
+                    
                 </div>
-                <div className="p-4 bg-gray-800 rounded-lg shadow">
+            </Link>
+            <Link href="users">
+                <div className="p-4 bg-gray-800 rounded-lg shadow border border-gray-700 hover:border-blue-700 hover:border-blue-500">
                     <h2 className="text-xl  text-gary-600 font-bold mb-2">Organizers</h2>
                     <p className="text-3xl font-bold text-gray-50">{counts.organizerCount}</p>
                 </div>
-                <div className="p-4 bg-gray-800 rounded-lg shadow">
+            </Link>
+            <Link href="users">
+                <div className="p-4 bg-gray-800 rounded-lg shadow border border-gray-700 hover:border-blue-700 hover:border-blue-500">
                     <h2 className="text-xl text-gary-600 font-bold mb-2">Events</h2>
                     <p className="text-3xl font-bold text-gray-50">{counts.eventCount}</p>
                 </div>
-                
+            </Link>
+            <Link href="users">
+                <div className="p-4 bg-gray-800 rounded-lg shadow border border-gray-700 hover:border-blue-700">
+                    <h2 className="text-xl text-gary-600 font-bold mb-2">Events</h2>
+                    <p className="text-3xl font-bold text-gray-50">{counts.eventCount}</p>
+                </div>
+            </Link>
             </div>
-        </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="flex items-center justify-center  mb-4 rounded bg-gray-50 dark:bg-gray-800">
+<div className="relative  w-full h-full overflow-x-auto shadow-md sm:rounded-lg">
+    <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" className="px-6 py-3">
+                    user name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                email
+                </th>
+                <th scope="col" className="px-6 py-3">
+                role
+                </th>
+                <th scope="col" className="px-6 py-3">
+                
+                </th>
+                <th scope="col" className="px-6 py-3">
+                
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {/* {users.map((user) => (
+            <tr key={user.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {user.name}
+                </th>
+                <th className="px-6 py-4">
+                {user.email}
+                </th>
+                <th className="px-6 py-4">  
+                {user.role}
+                </th>
+                <th className="px-6 py-4">
+                
+                </th>
+                <th className="px-6 py-4">
+                <Delete_user User={user} onComplete={handleEditComplete} />
+                </th>
+            </tr>
             
+        ))} */}
+
+        </tbody>
+    </table>
+        
+</div>
+</div>
+
+<div className="flex items-center justify-center  mb-4 rounded bg-gray-50 dark:bg-gray-800">
+<div className="relative  w-full h-full overflow-x-auto shadow-md sm:rounded-lg">
+    <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" className="px-6 py-3">
+                    user name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                email
+                </th>
+                <th scope="col" className="px-6 py-3">
+                role
+                </th>
+                <th scope="col" className="px-6 py-3">
+                
+                </th>
+                <th scope="col" className="px-6 py-3">
+                
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {/* {users.map((user) => (
+            <tr key={user.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {user.name}
+                </th>
+                <th className="px-6 py-4">
+                {user.email}
+                </th>
+                <th className="px-6 py-4">  
+                {user.role}
+                </th>
+                <th className="px-6 py-4">
+                
+                </th>
+                <th className="px-6 py-4">
+                <Delete_user User={user} onComplete={handleEditComplete} />
+                </th>
+            </tr>
+            
+        ))} */}
+
+        </tbody>
+    </table>
+        
+</div>
+</div>
+
+</div>
+        
+        <div className="flex items-center justify-center  mb-4 rounded bg-gray-50 dark:bg-gray-800">
+<div className="relative  w-full h-full overflow-x-auto shadow-md sm:rounded-lg">
+    <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" className="px-6 py-3">
+                    Event name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                start datetime
+                </th>
+                <th scope="col" className="px-6 py-3">
+                lient event
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Price
+                </th>
+                <th scope="col" className="px-6 py-3">
+                number max of participation
+                </th>
+                <th scope="col" className="px-6 py-3">
+                number of participation
+                </th>
+                <th scope="col" className="px-6 py-3">
+                gender
+                </th>
+                <th scope="col" className="px-6 py-3">
+                </th>
+                <th scope="col" className="px-6 py-3">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {/* {users.map((user) => (
+            <tr key={user.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {user.name}
+                </th>
+                <th className="px-6 py-4">
+                {user.email}
+                </th>
+                <th className="px-6 py-4">  
+                {user.role}
+                </th>
+                <th className="px-6 py-4">
+                
+                </th>
+                <th className="px-6 py-4">
+                <Delete_user User={user} onComplete={handleEditComplete} />
+                </th>
+            </tr>
+            
+        ))} */}
+
+        </tbody>
+    </table>
+        
+</div>
+</div>
+    </div>        
    </div>
 </div>
 

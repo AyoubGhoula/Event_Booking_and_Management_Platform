@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 interface DeleteEventProps {
-  eve: { id: number };
+    User: { id: number };
   onComplete: () => void;
 }
-
 const DeleteEvent: React.FC<DeleteEventProps> = ({ User, onComplete }) => {
   const [deleteUserPopup, setDeleteEventPopup] = useState(false);
   const [idUser, setIdUser] = useState(0);
@@ -40,9 +39,9 @@ const DeleteEvent: React.FC<DeleteEventProps> = ({ User, onComplete }) => {
       </button>
 
       {deleteUserPopup && (
-        <div className="overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center z-50 items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-          <div className="relative p-4 w-full max-w-md max-h-full">
-            <div className="relative rounded-lg shadow bg-gray-900">
+        <div className="overflow-y-auto overflow-x-hidden  fixed inset-0 flex items-center justify-center z-50 items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div className="relative p-4 w-full  max-w-md max-h-full">
+            <div className="relative rounded-lg border border-gray-700 shadow bg-gray-900">
               <button
                 type="button"
                 className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
