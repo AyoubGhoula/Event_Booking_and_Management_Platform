@@ -2,6 +2,7 @@
 // import video2 from "../assets/video2.mp4";
 
 // import serche_page from "../../search_page/search_page";
+import { SparklesCore } from "../components/ui/sparkles";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 const HeroSection = () => {
@@ -14,19 +15,42 @@ const HeroSection = () => {
   return (
     <>
      <div className="flex flex-col items-center ml-auto ">
-      <h1 className="text-5xl md:text-6xl lg:text-12xl font-bold text-center mb-10">
+      <h1 className="md:text-7xl text-5xl lg:text-9xl font-bold text-center text-white relative z-20">
       Bienvenue sur 
-        <span className="bg-gradient-to-r from-blue-500 to-blue-800 text-transparent bg-clip-text text-gradient">
-          {" "}
-          EventMaster
-        </span>
       </h1>
-      <p className="text-center md:text-lg lg:text-xl leading-8 text-gray-800 dark:text-gray-300">
+      <div>
+      <h1 className="md:text-7xl text-5xl lg:text-9xl font-bold text-center relative z-20 bg-gradient-to-r from-blue-500 to-blue-800 text-transparent bg-clip-text text-gradient">
+      EventMaster
+      </h1>
+      <div className="h-40  relative">
+        {/* Gradients */}
+        <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
+        <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
+        <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
+        <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
+ 
+        
+        {/* Radial Gradient to prevent sharp edges */}
+        <div className="absolute inset-0 w-full h-full bg-gray-900 [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+      </div>
+    </div>
+      <p className="text-center md:text-lg lg:text-xl leading-8 text-gray-800 dark:text-gray-300 mt-28">
       Découvrez et réservez des événements passionnants près de chez vous !
       </p>
       
-      <div className="flex flex-col items-center mt-8 lg:mt-3"> 
+      <div className="flex flex-col items-center mt-10 lg:mt-4"> 
       <div className="mt-10 text-lg text-center text-neutral-400 max-w-4x">
+      <div className="w-full absolute inset-0 h-screen">
+        <SparklesCore
+          id="tsparticlesfullpage"
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.4}
+          particleDensity={100}
+          className="w-full h-full"
+          particleColor="#FFFFFF"
+        />
+      </div>
         <section className="mb-8 pt-8">
           <h2 className="text-2xl font-bold mb-10">Explorez Nos Événements</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">

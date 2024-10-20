@@ -1,22 +1,21 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from "next/router";
-
 
 export default function Example() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
-    const [payer, setPayer] = useState('');
-    const [avatar, setAvatar] = useState(null);
+     const [payer, setPayer] = useState('');
+     const [avatar, setAvatar] = useState(null);
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [address, setAddress] = useState('');
-    const [role, setRole] = useState('user');
+    const [role, setRole] = useState('participant');
 
-    const handleSubmit = async (e:any) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('name', name);
@@ -28,8 +27,19 @@ export default function Example() {
         formData.append('date_of_birth', dateOfBirth);
         formData.append('address', address);
         formData.append('role', role);
-
+    
         try {
+            console.log("Form data being submitted:", {
+                name,
+                email,
+                password,
+                phone,
+                payer,
+                avatar,
+                dateOfBirth,
+                address,
+                role
+            });
             const response = await axios.post('http://127.0.0.1:8000/api/register', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -38,146 +48,235 @@ export default function Example() {
             console.log(response.data);
             window.location.href = '/sign-in';
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                console.error('Validation Errors:', error.response.data.errors);
+            } else {
+                console.error('Error:', error);
+            }
         }
     };
+    
+    useEffect(() => {
+        const roleElement = document.getElementById('role') as HTMLSelectElement | null;
+
+        // Check if the role element exists before adding the event listener
+        if (roleElement) {
+            const handleChange = function () {
+                const organizerFields = document.getElementById('organizer-fields');
+                if (organizerFields) {
+                    if (this.value === 'organizer') {
+                        organizerFields.classList.remove('hidden'); // Show organizer fields
+                    } else {
+                        organizerFields.classList.add('hidden'); // Hide organizer fields
+                    }
+                } else {
+                    console.error('Organizer fields element not found.');
+                }
+            };
+
+            roleElement.addEventListener('change', handleChange);
+
+            // Cleanup function to remove the event listener when the component unmounts
+            return () => {
+                roleElement.removeEventListener('change', handleChange);
+            };
+        } else {
+            console.error('Role element not found.');
+        }
+    }, []); // Empty dependency array means this effect runs once when the component mounts
 
     return (
         <section className="bg-white dark:bg-gray-900">
-            <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
+            <div className="container flex items-center justify-center min-h-screen px-6 mx-auto ">
                 <form className="w-full max-w-md" onSubmit={handleSubmit}>
-                    <div className="flex justify-center mx-auto">
+                    <div className="flex justify-center mx-auto mt-5">
                         <img className="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt="" />
                     </div>
                     
                     <div className="flex items-center justify-center mt-6">
-                        <Link href="/Sign_in" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300">
+                        <Link href="/sign-in" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300">
                             sign in
                         </Link>
 
-                        <Link href="/Sign_in" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white">
+                        <Link href="/sign-up" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white">
                             sign up
                         </Link>
                     </div>
+                            {/* name Field */}
+                            <div className='m-2 mt-10'>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full name</label>
+                                        <input
+                                            type="name"
+                                            name="name"
+                                            id="name"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="name"
+                                            required
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
+                            </div>
+                     {/* Email Field */}
+                     <div className='m-2 '>
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="name@company.com"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
 
-                    <div className="relative flex items-center mt-8">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </span>
-                        <input type="text" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username" value={name}
-                            onChange={(e) => setName(e.target.value)} />
-                    </div>
+                                {/* Date de Naissance Field */}
+                                <div className='m-2' >
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date de naissance</label>
+                                    <input
+                                        type="date"
+                                        name="birthdate"
+                                        id="birthdate"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required
+                                        value={dateOfBirth}
+                                        onChange={(e) => setDateOfBirth(e.target.value)}
+                                    />
+                                </div >
 
-                    <div className="relative flex items-center mt-8">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                        </span>
-                        <input type="email" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Email address" value={email}
-                            onChange={(e) => setEmail(e.target.value)} />
-                    </div>
+                                {/* Numéro de Téléphone Field */}
+                                <div className='m-2' >
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numéro de téléphone</label>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        id="phone"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="+1 234 567 890"
+                                        required
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                    />
+                                </div>
 
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        </span>
-                        <input type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password" value={password}
-                            onChange={(e) => setPassword(e.target.value)} />
-                    </div>
+                                {/* Password Field */}
+                                <div className='m-2' >
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        placeholder="••••••••"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required
+                                        minLength={8}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </div>
 
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        </span>
-                        <input type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Confirm Password" />
-                    </div>
+                                {/* Confirm Password Field */}
+                                <div className='m-2' >
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
+                                    <input
+                                        type="password"
+                                        name="confirm-password"
+                                        id="confirm-password"
+                                        placeholder="••••••••"
+                                        minLength={8}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required
+                                    />
+                                </div>
+                                <div className='m-2 mt-4' >
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payer</label>
+                                        <input
+                                            type="text"
+                                            name="Payer"
+                                            id="Payer"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Your Payer "
+                                            value={payer}
+                                        onChange={(e) => setPayer(e.target.value)}
 
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                        </span>
-                        <input type="text" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Phone" value={phone}
-                            onChange={(e) => setPhone(e.target.value)} />
-                    </div>
+                                        />
+                                    </div>
+                                {/* Role Selection */}
+                                <div className='m-2' >
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sign up as</label>
+                                    <select
+                                        id="role"
+                                        name="role"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required
+                                        value={role}
+                                        onChange={(e) => setRole(e.target.value)}
+                                    >
+                                        <option value="participant">Participant</option>
+                                        <option value="organizer">Organizer</option>
+                                    </select>
+                                </div>
 
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                        </span>
-                        <input type="text" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Payer" value={payer}
-                            onChange={(e) => setPayer(e.target.value)} />
-                    </div>
+                                {/* Organizer-Specific Fields */}
+                                <div id="organizer-fields" className={role === 'organizer' ? '' : 'hidden m-2 '}>
+                                    <div className='m-2 mt-4' >
+                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization Name</label>
+                                        <input
+                                            type="text"
+                                            name="organization"
+                                            id="organization"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Your organization name"
+                                        />
+                                    </div>
+                                    <div className='m-2' >
+                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website (optional)</label>
+                                        <input
+                                            type="url"
+                                            name="website"
+                                            id="website"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="https://yourwebsite.com"
+                                        />
+                                    </div>
+                                </div>
 
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                        </span>
-                        <input type="file" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" onChange={(e) => setAvatar(e.target.files[0])} />
-                    </div>
+                                {/* Terms and Conditions */}
+                                <div className="flex items-start m-2 mt-5">
+                                    <div className="flex items-center h-5 ">
+                                        <input
+                                            id="terms"
+                                            type="checkbox"
+                                            className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="ml-3 text-sm ">
+                                        <label className="font-light text-gray-500 dark:text-gray-300">
+                                            I accept the{" "}
+                                            <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                                                Terms and Conditions
+                                            </a>
+                                        </label>
+                                    </div>
+                                </div>
 
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                        </span>
-                        <input type="date" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Date of Birth" value={dateOfBirth}
-                            onChange={(e) => setDateOfBirth(e.target.value)} />
-                    </div>
-
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                        </span>
-                        <input type="text" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Address" value={address}
-                            onChange={(e) => setAddress(e.target.value)} />
-                    </div>
-
-                    <div className="relative flex items-center mt-4">
-                        <span className="absolute">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                        </span>
-                        <select className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" value={role}
-                            onChange={(e) => setRole(e.target.value)}>
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-
-                    <div className="mt-6">
-                        <div className="flex space-x-4 justify-center">
-                            <Link href="/">
-                                <button className="w-full px-8 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-red-500 rounded-lg hover:bg-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-50">
-                                    Cancel
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    className="w-full px-12 py-3 m-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                                >
+                                    Create an account
                                 </button>
-                            </Link>
-                            <button className="w-full px-12 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50" type="submit">
-                                Sign Up
-                            </button>
-                        </div>
-                        <div className="mt-6 text-center">
-                            <a href="#" className="text-sm text-blue-500 hover:underline dark:text-blue-400">
-                                Already have an account?
-                            </a>
-                        </div>
-                    </div>
+
+                                {/* Already Have an Account */}
+                                <p className="text-sm font-light text-gray-500 dark:text-gray-400 m-2">
+                                    Already have an account?{" "}
+                                    <Link href="/sign-in" className="font-medium text-blue-500 hover:underline">
+                                        Login here
+                                    </Link>
+                                </p>
                 </form>
             </div>
         </section>

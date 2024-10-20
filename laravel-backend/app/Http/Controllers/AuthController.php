@@ -19,7 +19,7 @@ class AuthController extends Controller
             'avatar' => 'nullable|file|image|max:2048',
             'date_of_birth' => 'nullable|date',
             'address' => 'nullable|string|max:255',
-            'role' => 'required|string|in:user,admin'
+            'role' => 'required|string|in:participant,admin,organizer'
         ]);
 
         $user = new User();

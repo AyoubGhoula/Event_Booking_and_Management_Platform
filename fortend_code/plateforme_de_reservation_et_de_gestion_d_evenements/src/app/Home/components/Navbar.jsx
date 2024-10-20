@@ -35,7 +35,7 @@ const Navbar = () => {
   }, []);
   const renderMenuItems = () => {
     switch (role) {
-      case "admin":
+      case "user":
         return (
           <>
             <Link href="/dashboard" className="py-2 px-3 lg:py-2 lg:px-3 border rounded-md hover:bg-neutral-700">Dashboard</Link>
@@ -52,7 +52,7 @@ const Navbar = () => {
           <>
             <Link href="/Home" className="py-2 px-3 border rounded-md hover:bg-neutral-700">Home</Link>
             <Link href="/my-events" className="py-2 px-3 border rounded-md hover:bg-neutral-700">My Events</Link>
-            <Link href="/create-event" className="py-2 px-3 border rounded-md hover:bg-neutral-700">Create Event</Link>
+            <Link href="/events" className="py-2 px-3 border rounded-md hover:bg-neutral-700">Create Event</Link>
             <Link href="/participants-management" className="py-2 px-3 border rounded-md hover:bg-neutral-700">Participants Management</Link>
             <Link href="/event-feedback" className="py-2 px-3 border rounded-md hover:bg-neutral-700">Event Feedback</Link>
             <div className="flex justify-center items-center h-full ">
@@ -60,7 +60,7 @@ const Navbar = () => {
           </div>
           </>
         );
-      case "user":
+      case "participant":
         return (
           // participate-
           <>
@@ -75,11 +75,11 @@ const Navbar = () => {
       default:
         return (
           <>
-          {!token &&(
+          {
             <>
             <Link href="/sign-in" className="py-2 px-3 border rounded-md hover:bg-neutral-700">Sign In</Link>
             <Link href="/sign-up" className="bg-gradient-to-r from-blue-500 to-blue-800 py-2 px-3 rounded-md">Create an account</Link>
-          </>)}
+          </>}
           </>
         );
     }

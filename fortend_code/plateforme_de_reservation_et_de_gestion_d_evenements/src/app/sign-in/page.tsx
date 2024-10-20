@@ -55,11 +55,11 @@ export default function Example() {
             </div>
             
             <div className="flex items-center justify-center mt-6">
-              <Link href="/Sign-in" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-blue-400 dark:text-blue-300">
+              <Link href="/sign-in" className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-blue-400 dark:text-blue-300">
                   sign in
               </Link>
 
-              <Link href="/Sign-up" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-gray-500 dark:border-gray-400 dark:text-white">
+              <Link href="/sign-up" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-gray-500 dark:border-gray-400 dark:text-white">
                   sign up
               </Link>
             </div>
