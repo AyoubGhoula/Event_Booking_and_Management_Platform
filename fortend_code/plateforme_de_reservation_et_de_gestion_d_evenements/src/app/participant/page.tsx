@@ -3,8 +3,9 @@ import React, { useState, useRef, useEffect } from'react';
 import Navbar from "./components/Navbar";
 import axios from 'axios';
 import { TEInput } from 'tw-elements-react';
-import { motion,AnimatePresence } from "framer-motion";
+import { motion,AnimatePresence,useAnimate } from "framer-motion";
 
+import { Tooltip } from 'react-tooltip'
 interface Event {
     id: number;
     name: string;
@@ -37,6 +38,7 @@ const DiscoverEvents = () => {
         description: 'Join us for an epic outdoor music festival.',
         type: 'Festival',
         location: 'Los Angeles, CA',
+        image:'/image/25oct7.jpg',
       },
       {
          id:8,
@@ -94,15 +96,7 @@ const DiscoverEvents = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const list = {
-   visible: { opacity: 1 },
-   hidden: { opacity: 0 },
- }
- 
- const item = {
-   visible: { opacity: 1, x: 0 },
-   hidden: { opacity: 0, x: -100 },
- }
+
 
 //   const [events, setEvents] =useState<Event[]>([]);
 //   useEffect(() => {
@@ -233,36 +227,45 @@ const DiscoverEvents = () => {
 
 )}
 </div>
-<aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-50 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar"  onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}>
+<motion.aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-50 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar"  
+      onMouseLeave={() => setIsHovered(false)}  >
    <div className="h-full px-3 py-6 overflow-y-auto bg-gray-50 dark:bg-gray-800 ">
 
-<ul className="space-y-4 font-medium pt-12 mt-5">
-
+<ul className="space-y-4 font-medium pt-7 mt-8">
+<li>
+<button  aria-controls="logo-sidebar" type="button" className="inline-flex items-center p-1 mt-2  text-sm text-gray-500 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" onClick={() => setIsHovered(!isHovered)}>
+   <span className="sr-only">Open sidebar</span>
+   <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+   <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+   </svg>
+</button>
+</li>
    <li>
-      <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      <motion.a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group mb-7" data-tooltip-id="tooltip-1"
+          data-tooltip-content="Discover Events" >
          <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
             <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
          </svg>
-         
-         {isHovered && <span className="flex-1 ms-3 whitespace-nowrap">Discover Events</span>}
-          </a>
+         {isHovered && <motion.span className="flex-1 ms-3 whitespace-nowrap" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}>Discover Events</motion.span>}
+          </motion.a>
    </li>
   
    <li>
-      <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      <motion.a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group mb-7" data-tooltip-id="tooltip-2"
+          data-tooltip-content="Upcoming Events" >
       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                   <path d="M18 0H6a2 2 0 0 0-2 2h14v12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Z"/>
                   <path d="M14 4H2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2ZM2 16v-6h12v6H2Z"/>
                </svg>
-               {isHovered && <span className="flex-1 ms-3 whitespace-nowrap">Upcoming Events</span>}
+               {isHovered && <span className="flex-1 ms-3 whitespace-nowrap">Upcoming</span>}
                {/* <span className="flex-1 ms-3 whitespace-nowrap">Upcoming Events</span> */}
-      </a>
+      </motion.a>
       
    </li>
     
    <li>
-      <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      <motion.a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group mb-7" data-tooltip-id="tooltip-3"
+          data-tooltip-content="Past Events" whileHover={{ scale: 1.01 }}>
             <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
                <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
@@ -270,31 +273,36 @@ const DiscoverEvents = () => {
             </svg>
             {isHovered && <span className="flex-1 ms-3 whitespace-nowrap">Past Events</span>}
          {/* <span className="flex-1 ms-3 whitespace-nowrap">Past Events</span> */}
-      </a>
+      </motion.a>
    </li>
    <li>
-      <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      <motion.a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"data-tooltip-id="tooltip-4"
+          data-tooltip-content="Notifications" whileHover={{ scale: 1.01 }}>
          <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
          </svg>
          {isHovered && <span className="flex-1 ms-3 whitespace-nowrap">Notifications</span>}
          {/* <span className="flex-1 ms-3 whitespace-nowrap">Notifications</span> */}
-          </a>
+          </motion.a>
    </li>
 </ul>
 <div className="absolute inset-x-0 bottom-0 h-8 border-t pb-10 mb-4 pt-3 border-gray-700">
-      <a    className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      <motion.a   className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"data-tooltip-id="tooltip-5"
+          data-tooltip-content="Profile" whileHover={{ scale: 1.01 }}>
       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
             <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
          </svg>
          {isHovered && <span className="flex-1 ms-3 whitespace-nowrap">Profile</span>}
          {/* <span className="flex-1 ms-3 whitespace-nowrap">Profile</span> */}
-         
-      </a>
+      </motion.a>
    </div>
 </div>
-
-</aside>
+{!isHovered && <div><Tooltip id="tooltip-1" place="right"/>
+  <Tooltip id="tooltip-2" place="right" animation="duration-300" />
+  <Tooltip id="tooltip-3" place="right" animation="duration-300" />
+  <Tooltip id="tooltip-4" place="right" animation="duration-300" />
+  <Tooltip id="tooltip-5" place="right" animation="duration-300" /></div> }
+</motion.aside>
 <div className="p-4 sm:ml-20">
    <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
    <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
@@ -380,38 +388,92 @@ const DiscoverEvents = () => {
     
   </motion.div>
 </motion.div>
-   {/* Selected Item */}
-   <AnimatePresence >
-          { filteredEvents.length > 0 && selectedId && (
-            <motion.div
-              key={selectedId}
-              className=" overflow-y-auto overflow-x-hidden fixed inset-0 flex items-center justify-center z-50  items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-black bg-opacity-20    "
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-            >
-              <div className="relative w-full max-w-[48rem] flex flex-col rounded-xl bg-white p-6 text-gray-700 shadow-md">
-                {/* Expanded Event Details */}
-                <motion.h5 layoutId={`type-${selectedId}`} className="text-pink-500">
-                  {filteredEvents.find(event => event.id === selectedId).type}
-                </motion.h5>
-                <motion.h2 layoutId={`title-${selectedId}`} className="text-2xl font-bold">
-                  {filteredEvents.find(event => event.id === selectedId).title}
-                </motion.h2>
-                <motion.p layoutId={`description-${selectedId}`}>
-                  {filteredEvents.find(event => event.id === selectedId).description}
-                </motion.p>
+<AnimatePresence>
+  {filteredEvents.length > 0 && selectedId && (
+    <motion.div
+      key={selectedId}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 "
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+    >
+      {/* Popup Container */}
+  
+      <div className="relative w-full max-w-6xl ms:max-w-xl flex flex-row bg-white rounded-xl border border-gray-700">
+      
+        
+        {/* Image Section with Navigation */}
+        <div className="relative w-4/5 bg-gray-100 rounded-xl">
+          {/* Previous Image Button */}
+          <button
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-100 hover:bg-gray-200 rounded-full"
+            // onClick={handlePrevImage} // Add logic for image navigation
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-                <motion.button
-                  className="mt-4 px-4 py-2 text-white bg-blue-600 rounded-md"
-                  onClick={() => setSelectedId(0)} // Close on click
-                >
-                  Close
-                </motion.button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
- 
+          {/* Event Image */}
+          <img
+            src={filteredEvents.find(event => event.id === selectedId).image} // Replace with dynamic image state
+            alt="Event"
+            className="object-cover w-full h-[calc(80vh)] rounded-l-xl"
+          />
+
+          {/* Next Image Button */}
+          <button
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-100 hover:bg-gray-200 rounded-full"
+            // onClick={handleNextImage} // Add logic for image navigation
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Event Details Section */}
+        <div className="w-5/6 p-6 flex flex-col h-[calc(80vh)] overflow-y-auto bg-white rounded-r-xl">
+          {/* Close Button (Top Right) */}
+          <button
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            onClick={() => setSelectedId(null)} // Close popup
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Event Details */}
+          <motion.h5 layoutId={`type-${selectedId}`} className="text-pink-500 text-sm uppercase">
+            {filteredEvents.find(event => event.id === selectedId).type}
+          </motion.h5>
+          <motion.h2 layoutId={`title-${selectedId}`} className="text-2xl font-bold">
+            {filteredEvents.find(event => event.id === selectedId).name}
+          </motion.h2>
+          <motion.p layoutId={`description-${selectedId}`} className="text-gray-700 mt-4 flex-grow">
+            {filteredEvents.find(event => event.id === selectedId).description}
+          </motion.p>
+
+          {/* Bottom Action Buttons */}
+          <div className="mt-4 flex justify-end space-x-4">
+            <button
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+              onClick={() => setSelectedId(null)}
+            >
+              Cancel
+            </button>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              Reserve
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </motion.div>
+  )}
+</AnimatePresence>
+
       </div> 
     </div>
     </div>
