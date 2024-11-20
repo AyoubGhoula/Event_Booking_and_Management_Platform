@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import axios from 'axios';
 import { TEInput } from 'tw-elements-react';
 import { motion,AnimatePresence,useAnimate } from "framer-motion";
-
+import { useExtractColors } from "react-extract-colors";
 import { Tooltip } from 'react-tooltip'
 interface Event {
     id: number;
@@ -47,6 +47,7 @@ const DiscoverEvents = () => {
         description: 'An exhibition of modern art and installations.',
         type: 'Exhibition',
         location: 'New York, NY',
+        image:'/image/10e5ed3a4dc33fbd3b146437610a99b10c0.webp',
       },
       {
          id:7,
@@ -142,9 +143,48 @@ const DiscoverEvents = () => {
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
     }
+    const extract_color = (imageUrl: string) => {
+      if (!imageUrl) {
+      const { colors, dominantColor, darkerColor, lighterColor, loading, error } =
+      useExtractColors(imageUrl);
+      if (loading) {
+        return <p>Loading...</p>;
+      }
+      if (error) {
+        return <p>Error: {error.message}</p>;
+      }
+      if (colors) {
+          return (
+            // set a linear gradient with colors extracted
+            <div
+              style={{
+                backgroundColor: `linear-gradient(45deg, ${dominantColor}, ${darkerColor}, ${lighterColor})`,
+              }}
+            >
+              <h1>Extract Color</h1>
+              <img src={imageUrl} alt="random image" width="200" height="300" />
+            </div>
+          );
+        };
+      }
+      return (
+        // set a linear gradient with colors extracted
+        <div
+
+        >
+          <h1>Extract Color</h1>
+          <img src={imageUrl} alt="random image" width="200" height="300" />
+        </div>
+      );
+      };
+      
 
   return (
-    <div className=' bg-gradient-to-b from-gray-900 to-gray-950'>
+    
+    <div className=''>
+      <div className="fixed top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(169,241,246,0.3),rgba(255,255,255,0))]"></div>
+<div className="fixed top-0 bg-[#f4f5f6] dark:bg-[#131517] h-screen w-screen -z-50"></div>
+<div className="fixed inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#00000000_40%,#0099FF10_100%)]"></div>
             <Navbar/>
             <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" onClick={toggleNavbar}>
    <span className="sr-only">Open sidebar</span>
@@ -348,46 +388,61 @@ const DiscoverEvents = () => {
         </div>
 
     {/* Events List */}
-<motion.div className="relative w-full h-full overflow-x-auto shadow-md sm:rounded-lg">
+    <motion.div className="flex flex-row justify-between rounded-2xl bg-background/80 p-3 backdrop-blur transition-all duration-100 border border-[#131517] border-opacity-0 hover:border-opacity-10 supports-[backdrop-filter]:bg-background/60 dark:border-opacity-10 dark:border-white dark:hover:border-white dark:hover:border-opacity-20 cursor-pointer hover:shadow-[0_0_10px_0_rgba(0,0,0,0.05)]" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:r4r:" data-state="closed">
   <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 p-6">
     {filteredEvents.length > 0 ? (
-      filteredEvents.map((event) => (
-        <motion.a
-          key={event.id}
-          whileHover={{ scale: 1.01 }}
-          className=" box relative flex w-full max-w-[48rem] flex-row rounded-xl bg-gray-800 hover:bg-gray-700 hover:bg-gray-100 shadow shadow-md cursor-pointer border border-gray-700 bg-clip-border text-gray-700 shadow-md"
-          onClick={() => setSelectedId(event.id)} // Replace this with routing to the event details page
-        >
-          {/* Event Image */}
-          <div className="relative m-0 w-2/5 shrink-0 overflow-hidden rounded-xl rounded-r-none bg-gray-800 bg-clip-border text-gray-200">
-            <motion.img
-            layoutId={`image-${event.id}`}
-              src={event.image}
-              alt={event.name}
-              className="h-full w-full object-cover"
-            />
-          </div>
+      filteredEvents.map((event) => {
+        // Extract colors from the event image
+        const image = event.image || '';
+        const { dominantColor, darkerColor, lighterColor, loading, error } = useExtractColors(image);
 
-          {/* Event Details */}
-          <div className="p-6">
-            <motion.h5 className="mb-4 block font-sans text-base font-semibold uppercase leading-relaxed tracking-normal text-pink-500 antialiased">
-              {event.type}
-            </motion.h5>
-            <motion.h4 className="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-200 antialiased">
-              {event.name}
-            </motion.h4>
-            <motion.p className="mb-8 block font-sans text-base font-normal leading-relaxed text-gray-200 antialiased">
-              {event.description}
-            </motion.p>
-          </div>
-        </motion.a>
-      ))
+        return (
+          <motion.a
+            key={event.id}
+            whileHover={{ scale: 1.01 }}
+            className="box relative flex w-full max-w-[48rem] flex-row rounded-xl bg-gray-800 hover:bg-gray-700 shadow shadow-md cursor-pointer border border-gray-700 bg-clip-border text-gray-700"
+            onClick={() => setSelectedId(event.id)}
+          >
+            {/* Event Image */}
+            <div className="relative m-0 w-2/5 shrink-0 overflow-hidden rounded-xl rounded-r-none bg-gray-800 bg-clip-border text-gray-200">
+              <motion.img
+                layoutId={`image-${event.id}`}
+                src={event.image}
+                alt={event.name}
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            {/* Event Details */}
+            <div className="p-6">
+              <motion.h5
+                className="mb-4 block font-sans text-base font-semibold uppercase leading-relaxed tracking-normal antialiased"
+                style={{ color: lighterColor || 'pink' }} // Fallback to pink if no color is available
+              >
+                {event.type}
+              </motion.h5>
+              <motion.h4
+                className="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal antialiased"
+                style={{ color: darkerColor || '#3b82f6' }} // Fallback to blue-gray if no color is available
+              >
+                {event.name}
+              </motion.h4>
+              <motion.p
+                className="mb-8 block font-sans text-base font-normal leading-relaxed antialiased"
+                style={{ color: dominantColor || 'gray' }} // Fallback to gray if no color is available
+              >
+                {event.description}
+              </motion.p>
+            </div>
+          </motion.a>
+        );
+      })
     ) : (
       <p>No events found</p>
     )}
-    
   </motion.div>
 </motion.div>
+
 <AnimatePresence>
   {filteredEvents.length > 0 && selectedId && (
     <motion.div
