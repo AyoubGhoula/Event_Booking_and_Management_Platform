@@ -1,96 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventMaster - README</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0 20px;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-        h1, h2, h3 {
-            color: #222;
-        }
-        h1 {
-            margin-top: 20px;
-            font-size: 2.5em;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-        a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-        .code-block {
-            margin: 20px 0;
-        }
-    </style>
-</head>
-<body>
+# EventMaster
 
-    <h1>EventMaster</h1>
-    <p><strong>EventMaster</strong> is a modern event management platform that allows users to seamlessly create, manage, and participate in various events. Designed with cutting-edge technologies like <strong>Laravel</strong>, <strong>React.js</strong>, and <strong>TypeScript</strong>, EventMaster ensures a secure, scalable, and user-friendly experience.</p>
+**EventMaster** is a modern event management platform that allows users to seamlessly create, manage, and participate in various events. Designed with cutting-edge technologies like **Laravel**, **React.js**, and **TypeScript**, EventMaster ensures a secure, scalable, and user-friendly experience.
 
-    <h2>Features</h2>
-    <ul>
-        <li><strong>User Roles:</strong>
-            <ul>
-                <li>Organizers: Create and manage events.</li>
-                <li>Participants: Browse and join events.</li>
-            </ul>
-        </li>
-        <li><strong>Event Management:</strong>
-            <ul>
-                <li>Create, update, and delete events.</li>
-                <li>Add and display event images.</li>
-            </ul>
-        </li>
-        <li><strong>Search and Filters:</strong>
-            <ul>
-                <li>Find events by title, date, or type.</li>
-                <li>Separate views for old and upcoming events.</li>
-            </ul>
-        </li>
-        <li><strong>Secure Authentication:</strong> Token-based authentication with auto-expiry after 30 minutes of inactivity.</li>
-        <li><strong>Interactive UI:</strong>
-            <ul>
-                <li>Popup for detailed event information.</li>
-                <li>Smooth animations using <code>react-pip</code>.</li>
-                <li>Tooltips for better user guidance (<code>react-tooltip</code>).</li>
-            </ul>
-        </li>
-    </ul>
+## Features
 
-    <h2>Tech Stack</h2>
-    <ul>
-        <li><strong>Frontend:</strong> React.js, Tailwind CSS, TypeScript</li>
-        <li><strong>Backend:</strong> Laravel, MySQL</li>
-        <li><strong>Other Tools:</strong>
-            <ul>
-                <li>React Tooltip for enhanced UI</li>
-                <li>Animations with <code>react-pip</code></li>
-                <li>JWT for secure API authentication</li>
-            </ul>
-        </li>
-    </ul>
+- **User Roles**:  
+  - Organizers: Create and manage events.  
+  - Participants: Browse and join events.  
 
+- **Event Management**:  
+  - Create, update, and delete events.  
+  - Add and display event images.  
+
+- **Search and Filters**:  
+  - Find events by title, date, or type.  
+  - Separate views for old and upcoming events.  
+
+- **Secure Authentication**:  
+  - Token-based authentication with auto-expiry after 30 minutes of inactivity.  
+
+- **Interactive UI**:  
+  - Popup for detailed event information.  
+  - Smooth animations using `react-pip`.  
+  - Tooltips for better user guidance (`react-tooltip`).  
+
+## Tech Stack
+
+- **Frontend**:  
+  - React.js  
+  - Tailwind CSS  
+  - TypeScript  
+
+- **Backend**:  
+  - Laravel  
+  - MySQL  
+
+- **Other Tools**:  
+  - React Tooltip for enhanced UI  
+  - Animations with `react-pip`  
+  - JWT for secure API authentication  
+
+## Installation
+
+### Prerequisites
+
+- Node.js (v16+ recommended)  
+- PHP (v8+ recommended)  
+- Composer  
+- MySQL  
+
+### Steps
+
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/your-username/EventMaster.git
+   cd EventMaster
     <h2>Installation</h2>
 
     <h3>Prerequisites</h3>
