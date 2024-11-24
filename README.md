@@ -53,26 +53,9 @@
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/your-username/EventMaster.git
-   cd EventMaster
-    <h2>Installation</h2>
-
-    <h3>Prerequisites</h3>
-    <ul>
-        <li>Node.js (v16+ recommended)</li>
-        <li>PHP (v8+ recommended)</li>
-        <li>Composer</li>
-        <li>MySQL</li>
-    </ul>
-
-    <h3>Steps</h3>
-    <ol>
-        <li>Clone the repository:
-            <div class="code-block">
-                <pre>git clone https://github.com/your-username/EventMaster.git  
+   <pre>git clone https://github.com/your-username/EventMaster.git  
 cd EventMaster</pre>
-            </div>
-        </li>
+
         <li><strong>Backend Setup (Laravel):</strong>
             <ul>
                 <li>Install dependencies:
@@ -119,24 +102,14 @@ cd EventMaster</pre>
         </li>
     </ol>
 
-    <h2>Contributing</h2>
-    <p>We welcome contributions!</p>
-    <ol>
-        <li>Fork the repository.</li>
-        <li>Create a new branch for your feature/bug fix.</li>
-        <li>Commit your changes and push to your fork.</li>
-        <li>Open a pull request with a detailed description of your changes.</li>
-    </ol>
+  #License
 
-    <h2>License</h2>
-    <p>This project is licensed under the <a href="#">MIT License</a>.</p>
+This project is licensed under the <pre>MIT License</pre>.
 
-    <h2>Contact</h2>
-    <p>For questions or support, feel free to reach out:</p>
-    <ul>
-        <li><strong>Developer:</strong> Ayoub Ghoula</li>
-        <li><strong>Email:</strong> <a href="mailto: ayoubghoula40@gmail.com">ayoubghoula40@gmail.com</a></li>
-    </ul>
+# Contact
 
-</body>
-</html>
+For questions or support, feel free to reach out:
+
+Developer: Ayoub Ghoula
+
+Email: ayoubghoula24@gmail.com
