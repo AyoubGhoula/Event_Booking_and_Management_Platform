@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React, {useState } from "react";
 import { Menu, X } from "lucide-react";
 // import DropdownMenu from "./DropdownMenu";
-import serche_page from "../../search/page";
+import serche_page from "../../../search/page";
 
 const Navbar = () => {
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);

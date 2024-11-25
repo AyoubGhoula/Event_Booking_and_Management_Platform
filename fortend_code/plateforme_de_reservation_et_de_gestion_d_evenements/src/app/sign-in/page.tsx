@@ -23,10 +23,16 @@ export default function Example() {
         email,
         password,
       });
-      console.log(response.data);
+      console.log(response.data);// is for testing
       alert('You have been logged in successfully');
       localStorage.setItem('token', response.data.access_token);
-        window.location.href = '/Home';
+      if(response.data.role === "participant") {
+        window.location.href = '/participant';
+      } else if (response.data.role === "admin") {
+        window.location.href = '/admin';
+      } else if (response.data.role === "organizer") {
+        window.location.href = '/events';
+      }
     } catch (err) {
       alert("Invalid email or password");
     }

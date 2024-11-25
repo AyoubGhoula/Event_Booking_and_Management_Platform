@@ -9,7 +9,14 @@ import axios from 'axios';
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [role, setRole] = useState("");
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Safe to access localStorage
+      const storedToken = localStorage.getItem("token");
+      setToken(storedToken);
+    }
+  }, []);
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
@@ -32,10 +39,10 @@ const Navbar = () => {
     };
 
     fetchUserRole();
-  }, []);
+  }, [token,]);
   const renderMenuItems = () => {
     switch (role) {
-      case "user":
+      case "participant":
         return (
           <>
             <Link href="/dashboard" className="py-2 px-3 lg:py-2 lg:px-3 border rounded-md hover:bg-neutral-700">Dashboard</Link>
