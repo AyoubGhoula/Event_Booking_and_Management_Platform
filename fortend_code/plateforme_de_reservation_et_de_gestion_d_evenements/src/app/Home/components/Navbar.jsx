@@ -118,7 +118,7 @@ const Navbar = () => {
           aria-orientation="vertical"
           aria-labelledby="options-menu"
         > <div className="mb-0 xl:w-96">
-              <div className="block px-4 py-2 flex w-full  justify-center flex-wrap items-center">
+              <div className=" px-4 py-2 flex w-full  justify-center flex-wrap items-center">
                 {renderMenuItems()}
               </div>
             </div>
