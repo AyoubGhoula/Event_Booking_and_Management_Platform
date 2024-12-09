@@ -44,15 +44,7 @@ const Navbar = () => {
     switch (role) {
       case "participant":
         return (
-          <>
-            <Link href="/dashboard" className="py-2 px-3 lg:py-2 lg:px-3 border rounded-md hover:bg-neutral-700">Dashboard</Link>
-            <Link href="/manage-users" className="py-2 px-3 lg:py-2 lg:px-3 border rounded-md hover:bg-neutral-700">Manage Users</Link>
-            <Link href="/manage-events" className="py-2 px-3 lg:py-2 lg:px-3  border rounded-md hover:bg-neutral-700">Manage Events</Link>
-            <div className="flex justify-center items-center h-full ">
-              
-            <DropdownMenu />
-          </div>
-          </>
+        window.location.href = '/participant'
         );
       case "organizer":
         return (

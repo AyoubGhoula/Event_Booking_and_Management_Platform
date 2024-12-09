@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from'react';
-import Navbar from "./components/Navbar";
+import Navbar from "../components/Navbar";
 import axios from 'axios';
 import { motion,AnimatePresence,useAnimate } from "framer-motion";
 import { Tooltip } from 'react-tooltip'
@@ -207,7 +207,7 @@ const filteredEvents = events.filter((event) => {
   return (
     
     <div className=''>
-      <div className="fixed top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(42,54,99,0.7),rgba(255,255,255,0))]"></div>
+      <div className="fixed top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(42,54,99,0.7),rgba(255,255,255,0))] backdrop-blur-lg"></div>
 <div className="fixed top-0 bg-[#131517] h-screen w-screen -z-50"></div>
 <div className="fixed inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#00000000_40%,#0099FF10_100%)]"></div>
             <Navbar/>
@@ -336,7 +336,7 @@ const filteredEvents = events.filter((event) => {
    </li>
     
    <li>
-      <motion.a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group mb-7" data-tooltip-id="tooltip-3"
+      <motion.a href="/participant/Past_Events" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group mb-7" data-tooltip-id="tooltip-3"
           data-tooltip-content="Past Events" whileHover={{ scale: 1.01 }}>
             <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
@@ -348,7 +348,7 @@ const filteredEvents = events.filter((event) => {
       </motion.a>
    </li>
    <li>
-      <motion.a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"data-tooltip-id="tooltip-4"
+      <motion.a href="/participant/Notifications" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"data-tooltip-id="tooltip-4"
           data-tooltip-content="Notifications" whileHover={{ scale: 1.01 }}>
          <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
@@ -376,44 +376,43 @@ const filteredEvents = events.filter((event) => {
   <Tooltip id="tooltip-5" place="right" animation="duration-300" /></div> }
 </motion.aside>
 <div className="p-4 sm:ml-20">
-   <div className="p-4  rounded-lg ">
-   <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+<div className="p-4  rounded-lg ">
+   <div className="flex items-center justify-center h-48 mb-4 rounded">
             <div className="mx-auto mt-6 w-full px-6 lg:mx-0 lg:max-w-none max-w-3xl">
-              <div className="mb-6 items-end justify-between text-white flex">
+              <div className="mb-7 items-end justify-between text-white flex">
                 <div>
-                  <p className="text-xl font-medium lg:text-2xl">Dark dashboard with 3-column sections</p>
-                  <p className="text-gray-400">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                  <h1 className="text-8xl p-2 ms:text-2xl font-bold bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500 bg-clip-text text-transparent">Discover Events</h1>
+                  <p className="text-gray-400 mt-7 pl-10 text-2xl bg-gradient-to-r  from-rose-400 to-red-500 bg-clip-text text-transparent ">Start Your Journey with Great Events</p>
                 </div>
               </div>
             </div>
       </div>
     <div className="flex flex-col items-center"> 
       {/* Search Fields */}
-      <div className="relative  w-full h-full overflow-x-auto shadow-md sm:rounded-lg ">
-        <div className="flex mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            <div className="flex flex-1 items-center justify-center p-6">
-        <div className="grid gap-6 md:grid-cols-3">
+      <div className="relative  w-full h-full overflow-x-auto shadow-md sm:rounded-lg mb-14 mt-10 ">
+        <div className="flex mb-4 rounded  ">
+            <div className="flex flex-1 items-center justify-center p-2">
+        <div className="grid gap-12 md:grid-cols-3 ">
         <input
           type="text"
           placeholder="Type query"
          value={searchTitle}
           onChange={(e) => setSearchTitle(e.target.value)}
-          className=" mx-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className=" mx-3 bg-transparent border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <input
           type="text"
           placeholder="Search by type"
           value={searchType}
           onChange={(e) => setSearchType(e.target.value)}
-          className="mx-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className=" mx-3 bg-transparent border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <input
           type="date"
           value={searchDate}
           onChange={(e) => setSearchDate(e.target.value)}
-          className=" mx-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className=" mx-3 bg-transparent border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
-        
         </div>
         </div>
         </div>
@@ -452,6 +451,8 @@ const filteredEvents = events.filter((event) => {
             </div>
 
             {/* Event Details */}
+            
+          
             <div className="flex flex-col items-start content-start justify-between gap-2 p-6">
 <h4 className="text-base font-medium scroll-m-20 text-muted-foreground text-cyan-50">
 8:30
@@ -483,19 +484,13 @@ P
 </div>
 </div>
 <div className="flex flex-row flex-wrap gap-1 max-w-fit">
+<motion.div className="items-center px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent font-medium border border-opacity-20 shadow-none rounded-full overflow-hidden text-nowrap text-ellipsis block max-w-[25vw] bg-teal-500/20 hover:bg-teal-500/20 text-teal-500">
+{event.type}
+</motion.div>
 <div className="items-center px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent font-medium border border-opacity-20 shadow-none rounded-full overflow-hidden text-nowrap text-ellipsis max-w-[25vw] bg-green-500/20 hover:bg-green-500/20 text-green-500 flex-row flex">
-100  
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-right w-5 h-3 px-1">
-<path d="M5 12h14">
-</path>
-<path d="m12 5 7 7-7 7">
-</path>
-</svg>
 200 TND
 </div>
-<motion.div className="items-center px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent font-medium border border-opacity-20 shadow-none rounded-full overflow-hidden text-nowrap text-ellipsis block max-w-[25vw] bg-teal-500/20 hover:bg-teal-500/20 text-teal-500">
-⚡Réservation instantanée
-</motion.div>
+
 </div>
 </div>
           </motion.a>
@@ -569,6 +564,8 @@ P
             </svg>
           </button>
 
+          {/*rapport button*/}
+          
           {/* Event Details */}
           
           <motion.h1
@@ -743,15 +740,9 @@ P
         </div>
           {/* Bottom Action Buttons */}
           <div className="mt-4 flex justify-end space-x-4">
-            <button
-              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
-              onClick={() => setSelectedId(null)}
-            >
-              Cancel
-            </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              Reserve
-            </button>
+          <button className="flex absolute top-4 right-12 items-center text-red-700  hover:text-red-300 font-bold border border-red-600 px-2 py-0.5 rounded-md hover:bg-red-600">
+  <span className=" font-extrabold text-xs">!</span>
+</button>
           </div>
         </div>
       </div>
