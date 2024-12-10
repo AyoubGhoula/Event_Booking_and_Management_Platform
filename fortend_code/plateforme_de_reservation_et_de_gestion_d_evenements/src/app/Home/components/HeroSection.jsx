@@ -16,7 +16,7 @@ const HeroSection = () => {
     <>
      <div className="flex flex-col items-center ml-auto ">
       <h1 className="md:text-7xl text-5xl lg:text-9xl font-bold text-center text-white relative z-20 mt-18">
-      Bienvenue sur 
+      Welcome to
       </h1>
       <div>
       <h1 className="md:text-7xl text-5xl lg:text-9xl font-bold text-center relative z-20 bg-gradient-to-r from-blue-500 to-blue-800 text-transparent bg-clip-text text-gradient">
@@ -34,7 +34,7 @@ const HeroSection = () => {
       </div>
     </div>
       <p className="text-center md:text-lg lg:text-xl leading-8 text-gray-800 dark:text-gray-300 mt-20">
-      Découvrez et réservez des événements passionnants près de chez vous !
+      Discover and book exciting events near you!
       </p>
       
       <div className="flex flex-col items-center mt-10 lg:mt-4"> 

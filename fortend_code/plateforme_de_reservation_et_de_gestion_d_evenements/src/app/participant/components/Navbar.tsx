@@ -19,8 +19,7 @@ const Navbar = () => {
         <div className="container px-4 mx-2 relative lg:text-sm">
         <div className="flex left-0 justify-between items-center">
             <div className="flex items-center flex-shrink-0">
-            <img className="h-10 w-10 " src={""} alt="Logo" />
-            <span className="text-xl tracking-tight">EventMaster</span>
+            <span className="text-2xl tracking-tight">EventMaster</span>
             </div>
         </div>
         </div>

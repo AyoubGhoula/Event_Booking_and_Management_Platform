@@ -87,10 +87,53 @@ export default function Example() {
 
     return (
         <section className="bg-white dark:bg-gray-900">
+            {/*<div className="overflow-y-auto bg-black bg-opacity-50 overflow-x-hidden fixed inset-0 flex  justify-center z-50 items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div className="relative p-4 w-full max-w-md max-h-full">
+            <div className="relative rounded-lg shadow bg-gray-900">
+              <button
+                type="button"
+                className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                
+              >
+              
+                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+              <div className="max-w-md mx-auto border  mt-20 rounded">
+    <form className="shadow-md px-4 py-6">
+    <h3 className='mb-2 justify-center ml-4'> Your verification code has been sent to your email. Please check your inbox to proceed.</h3>
+        <div className="flex justify-center gap-2 mb-6">
+            <input className="w-12 h-12 text-center bg-slate-700 border rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500" type="text"  pattern="[0-9]"   required/>
+            <input className="w-12 h-12 text-center  bg-slate-700 border rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500" type="text"  pattern="[0-9]"   required/>
+            <input className="w-12 h-12 text-center   bg-slate-700 border rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500" type="text"  pattern="[0-9]"   required/>
+            <input className="w-12 h-12 text-center  bg-slate-700 border rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500" type="text"  pattern="[0-9]"   required/>
+        </div>
+        <div className="flex items-center justify-center">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Verify
+            </button>
+            <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-4" href="#">
+                Resend 
+            </a>
+        </div>
+    </form>
+</div>
+            </div>
+          </div>
+        </div>*/} 
             <div className="container flex items-center justify-center min-h-screen px-6 mx-auto ">
                 <form className="w-full max-w-md" onSubmit={handleSubmit}>
                     <div className="flex justify-center mx-auto mt-5">
-                        <img className="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt="" />
+                        {/* <img className="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt="" /> */}
+                        <div className='flex items-center font-bold bg-gradient-to-r  from-cyan-500 to-blue-500 bg-clip-text text-transparent text-2xl'>EventMaster</div>
                     </div>
                     
                     <div className="flex items-center justify-center mt-6">
@@ -103,8 +146,25 @@ export default function Example() {
                         </Link>
                     </div>
                             {/* name Field */}
+                            <div className="flex gap-4">
+                            <div className="flex-1">
                             <div className='m-2 mt-10'>
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full name</label>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">first name</label>
+                                        <input
+                                            type="first name"
+                                            name="first name"
+                                            id="first name"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="first name"
+                                            required
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
+                            </div>
+                            </div>
+                            <div className="flex-1">
+                            <div className='m-2 mt-10'>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">name</label>
                                         <input
                                             type="name"
                                             name="name"
@@ -112,10 +172,11 @@ export default function Example() {
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="name"
                                             required
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
+                                            
                                         />
                             </div>
+                            </div></div>
+
                      {/* Email Field */}
                      <div className='m-2 '>
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
@@ -131,23 +192,9 @@ export default function Example() {
                                     />
                                 </div>
 
-                                {/* Date de Naissance Field */}
-                                <div className='m-2' >
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date de naissance</label>
-                                    <input
-                                        type="date"
-                                        name="birthdate"
-                                        id="birthdate"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required
-                                        value={dateOfBirth}
-                                        onChange={(e) => setDateOfBirth(e.target.value)}
-                                    />
-                                </div >
-
                                 {/* Numéro de Téléphone Field */}
                                 <div className='m-2' >
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numéro de téléphone</label>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
                                     <input
                                         type="tel"
                                         name="phone"
@@ -159,7 +206,8 @@ export default function Example() {
                                         onChange={(e) => setPhone(e.target.value)}
                                     />
                                 </div>
-
+                                <div className="flex gap-4">
+                            <div className="flex-1">
                                 {/* Password Field */}
                                 <div className='m-2' >
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
@@ -175,7 +223,8 @@ export default function Example() {
                                         onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>
-
+                                </div>
+                                <div className="flex-1">
                                 {/* Confirm Password Field */}
                                 <div className='m-2' >
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
@@ -189,19 +238,8 @@ export default function Example() {
                                         required
                                     />
                                 </div>
-                                <div className='m-2 mt-4' >
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payer</label>
-                                        <input
-                                            type="text"
-                                            name="Payer"
-                                            id="Payer"
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Your Payer "
-                                            value={payer}
-                                        onChange={(e) => setPayer(e.target.value)}
-
-                                        />
-                                    </div>
+                                </div>
+                                </div>
                                 {/* Role Selection */}
                                 <div className='m-2' >
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sign up as</label>
@@ -220,7 +258,13 @@ export default function Example() {
 
                                 {/* Organizer-Specific Fields */}
                                 <div id="organizer-fields" className={role === 'organizer' ? '' : 'hidden m-2 '}>
-                                    <div className='m-2 mt-4' >
+                                <label className=" block mb-2 ml-2 text-sm font-medium text-gray-900 dark:text-white">Organization logo</label>
+                                <input type="file" name="file-input" id="file-input" className="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10  focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+                                    file:bg-gray-50 file:border-0
+                                    file:me-4
+                                    file:py-3 file:px-4
+                                    dark:file:bg-neutral-700 dark:file:text-neutral-400"/>
+                                        <div className='m-2 mt-4' >
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organization Name</label>
                                         <input
                                             type="text"

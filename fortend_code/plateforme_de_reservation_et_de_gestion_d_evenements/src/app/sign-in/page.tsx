@@ -57,7 +57,7 @@ export default function Example() {
         <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
           <form className="w-full max-w-md" onSubmit={handleSubmit}>
             <div className="flex justify-center mx-auto">
-              <img className="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt=""/>
+            <div className='flex items-center font-bold bg-gradient-to-r  from-cyan-500 to-blue-500 bg-clip-text text-transparent text-2xl'>EventMaster</div>
             </div>
             
             <div className="flex items-center justify-center mt-6">
@@ -100,7 +100,7 @@ export default function Example() {
               </div>
               <div className="mt-6 text-center">
                 <a href="#" className="text-sm text-blue-500 hover:underline dark:text-blue-400">
-                  Already have an account?
+                forget password?
                 </a>
               </div>
             </div>

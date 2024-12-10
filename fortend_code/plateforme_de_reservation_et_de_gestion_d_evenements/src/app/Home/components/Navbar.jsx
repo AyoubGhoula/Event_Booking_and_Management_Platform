@@ -42,11 +42,11 @@ const Navbar = () => {
   }, [token,]);
   const renderMenuItems = () => {
     switch (role) {
-      case "participant":
+      case "aaa":
         return (
         window.location.href = '/participant'
         );
-      case "organizer":
+      case "aaa":
         return (
           <>
             <Link href="/Home" className="py-2 px-3 border rounded-md hover:bg-neutral-700">Home</Link>
@@ -59,7 +59,7 @@ const Navbar = () => {
           </div>
           </>
         );
-      case "participant":
+      case "aaa":
         return (
           // participate-
           <>
@@ -89,7 +89,6 @@ const Navbar = () => {
       <div className="container mx-auto relative lg:text-sm">
         <div className="flex px-7 justify-between items-center lg:px-2">
           <div className="flex items-center flex-shrink-0">
-            <img className="h-10 w-10 mr-2" src={""} alt="Logo" />
             <span className="text-xl tracking-tight">EventMaster</span>
           </div>
           
