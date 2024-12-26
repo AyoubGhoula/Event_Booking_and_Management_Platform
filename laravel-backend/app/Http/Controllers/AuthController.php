@@ -7,66 +7,213 @@ use App\Models\events;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Validation\ValidationException;
+use App\Notifications\EmailVerificationCode;
+
 class AuthController extends Controller
 {
-    public function register(Request $request) {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'phone' => 'nullable|string|max:15',
-            'payer' => 'required|string',
-            'avatar' => 'nullable|file|image|max:2048',
-            'date_of_birth' => 'nullable|date',
-            'address' => 'nullable|string|max:255',
-            'role' => 'required|string|in:participant,admin,organizer'
-        ]);
+    public function register(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8',
+                'phone' => 'nullable|string|max:15',
+                'role' => 'required|string|in:participant,admin,organizer',
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->phone = $request->phone;
-        $user->payer = $request->payer;
-        if ($request->hasFile('avatar')) {
-            $user->avatar = $request->file('avatar')->store('avatars', 'public');
+            // Generate verification code
+            $verificationCode = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+
+            // Create the user
+            $user = new User();
+            $user->name = $request->name;
+            $user->first_name = $request->first_name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->phone = $request->phone;
+            $user->role = $request->role;
+            $user->verification_code = $verificationCode;
+            $user->code_expires_at = now()->addMinutes(15);
+            $user->save();
+
+            // Handle organizer-specific data
+            if ($request->role === 'organizer') {
+                $avatarPath = null;
+                if ($request->hasFile('avatar')) {
+                    $avatarPath = $request->file('avatar')->store('avatars', 'public');
+                }
+
+                $user->organisateur()->create([
+                    'nom_organisation' => $request->nom_organisation,
+                    'site_web_organisation' => $request->site_web_organisation ?? null,
+                    'compte_valide' => false,
+                    'avatar' => $avatarPath,
+                ]);
+            } elseif ($request->role === 'participant') {
+                $user->participant()->create([]);
+            } elseif ($request->role === 'admin') {
+                $user->admin()->create([]);
+            }
+
+            // Send verification code
+            $user->notify(new EmailVerificationCode($verificationCode));
+
+            return response()->json([
+                'message' => 'Registration successful. Please check your email for verification code.',
+                'email' => $user->email
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Registration failed',
+                'error' => $e->getMessage()
+            ], 500);
         }
-        $user->date_of_birth = $request->date_of_birth;
-        $user->address = $request->address;
-        $user->role = $request->role;
-        $user->save();
+    }
 
-        return response()->json(['message' => 'User registered successfully'], 201);
+    public function verifyEmail(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'code' => 'required|string|size:4'
+            ]);
+
+            $user = User::where('email', $request->email)
+                       ->where('verification_code', $request->code)
+                       ->where('code_expires_at', '>', now())
+                       ->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Invalid or expired verification code'
+                ], 400);
+            }
+
+            $user->email_verified = true;
+            $user->actif = true;
+            $user->verification_code = null;
+            $user->code_expires_at = null;
+            $user->save();
+
+            return response()->json([
+                'message' => 'Email verified successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Verification failed',
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    public function resendVerificationCode(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email'
+            ]);
+
+            $user = User::where('email', $request->email)
+                       ->where('email_verified', false)
+                       ->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'User not found or already verified'
+                ], 404);
+            }
+
+            // Generate new verification code
+            $verificationCode = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+            
+            $user->verification_code = $verificationCode;
+            $user->code_expires_at = now()->addMinutes(15);
+            $user->save();
+
+            // Send new verification code
+            $user->notify(new EmailVerificationCode($verificationCode));
+
+            return response()->json([
+                'message' => 'New verification code sent'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to resend code',
+                'error' => $e->getMessage()
+            ], 400);
+        }
     }
 
     public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|string|email',
-        'password' => 'required|string',
-    ]);
+    {
+        try {
+            $request->validate([
+                'email' => 'required|string|email',
+                'password' => 'required|string',
+            ]);
 
-    if (!Auth::attempt($request->only('email', 'password'))) {
-        return response()->json(['message' => 'Invalid login details'], 401);
+            if (!Auth::attempt($request->only('email', 'password'))) {
+                return response()->json(['message' => 'Invalid login details'], 401);
+            }
+
+            $user = Auth::user();
+
+            if (!$user->email_verified) {
+                return response()->json([
+                    'message' => 'Please verify your email first',
+                    'email' => $user->email,
+                    'verified' => false
+                ], 200);
+            }
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+            
+            $user->actif = true;
+            $user->save();
+
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'role' => $user->role,
+            ], 200);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
-
-    $user = Auth::user();
-    $token = $user->createToken('auth_token')->plainTextToken;
-    $role = $user->role;
-
-    return response()->json([
-        'access_token' => $token,
-        'token_type' => 'Bearer',
-        'role' => $role,
-    ]);
-}
-
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        try {
+            // tern the user inactif
+            $request->user()->actif = false;
+            $request->user()->save();
+            $request->user()->currentAccessToken()->delete();
+            return response()->json(['message' => 'User logged out successfully']);
+            } catch (\Exception $e) {
+                return response()->json(['message' => 'Failed to logout user', 'error' => $e->getMessage()], 400);
+            }
 
-        return response()->json(['message' => 'User logged out successfully']);
     }
 
     public function getAllEvents()

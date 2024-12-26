@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -18,12 +19,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'first_name',
         'email',
         'password',
-        'payer',
         'phone',
-        'date_of_birth',
-        'address',
+        'role',
+        'actif',
+        'email_verified',
+        'verification_code',
+        'code_expires_at'
     ];
 
     /**
@@ -34,6 +38,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'verification_code',
+        'code_expires_at'
     ];
 
     /**
@@ -42,17 +48,21 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        // 'email_verified' => 'datetime',
+        'email_verified' => 'boolean',
+        'actif' => 'boolean',
+        'code_expires_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    public function eventsCreated()
-    {
-        return $this->hasMany(events::class, 'created_by');
+    public function organisateur() {
+        return $this->hasOne(Organisateur::class);
     }
 
-    public function events()
-    {
-        return $this->belongsToMany(events::class, 'event_user');
+    public function participant() {
+        return $this->hasOne(Participant::class);
+    }
+
+    public function admin() {
+        return $this->hasOne(Admin::class);
     }
 }

@@ -16,17 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->boolean('email_verified')->default(false);
+            $table->string('verification_code', 4)->nullable();
+            $table->timestamp('code_expires_at')->nullable();
             $table->string('password');
+            $table->string('phone');
+            $table->string('role')->default('participant');
+            $table->boolean('actif')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('phone')->nullable();
-            $table->string("payer");
-            $table->string('avatar')->nullable();
-            $table->date('date_of_birth')->nullable();
-            $table->string('address')->nullable();
-            $table->string('role')->default('user');
-            $table->boolean('is_verified_role_organizations')->default(false);
         });
     }
 
