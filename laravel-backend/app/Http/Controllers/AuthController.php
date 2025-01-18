@@ -136,7 +136,7 @@ class AuthController extends Controller
 
             // Generate new verification code
             $verificationCode = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
-            
+
             $user->verification_code = $verificationCode;
             $user->code_expires_at = now()->addMinutes(15);
             $user->save();
@@ -179,7 +179,7 @@ class AuthController extends Controller
             }
 
             $token = $user->createToken('auth_token')->plainTextToken;
-            
+
             $user->actif = true;
             $user->save();
 
@@ -374,6 +374,54 @@ class AuthController extends Controller
             'organizerCount' => $organizerCount,
             'eventCount' => $eventCount,
         ]);
+    }
+
+    public function updateUser(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'phone' => 'nullable|string|max:15',
+            ]);
+
+            $user->update([
+                'name' => $request->name,
+                'first_name' => $request->first_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ]);
+
+            return response()->json(['message' => 'User updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to update user', 'error' => $e->getMessage()], 400);
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $request->validate([
+                'current_password' => 'required|string',
+                'new_password' => 'required|string|min:8|confirmed',
+            ]);
+
+            if (!Hash::check($request->current_password, $user->password)) {
+                return response()->json(['message' => 'Current password is incorrect'], 400);
+            }
+
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            return response()->json(['message' => 'Password changed successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to change password', 'error' => $e->getMessage()], 400);
+        }
     }
 
 }

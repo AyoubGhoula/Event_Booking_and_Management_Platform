@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->string('name_evenement');
             $table->string('type');
             $table->string('contenu');
             $table->datetime('envoye_le');
             $table->unsignedBigInteger('destinataire_id');
-            $table->unsignedBigInteger('evenement_id');
             $table->unsignedBigInteger('participant_id');
-            $table->foreign('destinataire_id')->references('id')->on('organisateurs');
-            $table->foreign('evenement_id')->references('id')->on('participants');
-            $table->foreign('participant_id')->references('id')->on('evenements')->onDelete('cascade');
+            $table->foreign('destinataire_id')->references('id')->on('organisateurs')->onDelete('cascade');
+            $table->foreign('participant_id')->references('id')->on('participants')->onDelete('cascade');
             $table->timestamps();
         });
 

@@ -13,34 +13,32 @@ class EventController extends Controller
     public function createEvent(Request $request)
     {
         try {
-
-
         $request->validate([
             'titre'=> 'required|string|max:255',
             'type'=> 'required|string|max:255',
             'description'=> 'required|string',
-            'image'=> 'required|string',
             'lieu'=> 'required|string',
             'map_link'=> 'required|string',
             'date_debut'=> 'required|date',
             'date_fin'=> 'required|date',
             'nb_max_participants'=> 'required|integer',
             'prix'=> 'required|integer',
+            'image'=> 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        $organisateur_id = Auth::user()->organisateur->id; 
+        $organisateur_id = Auth::user()->organisateur->id;
         $event = new Evenement();
         $event->titre = $request->input('titre');
         $event->type = $request->input('type');
         $event->description = $request->input('description');
-        
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
+            $image->move(public_path('storage/images'), $imageName);
             $event->image = $imageName;
         }
-
+        // $event->image = "test.jpg";
         $event->lieu = $request->input('lieu');
         $event->map_link = $request->input('map_link');
         $event->date_debut = $request->input('date_debut');
@@ -61,7 +59,7 @@ public function getAllEvents()
         try {
             //get all events with their creator
             $events = Evenement::with('organisateur')->get();
-            
+
             return response()->json($events);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to get events', 'error' => $e->getMessage()], 400);
@@ -71,12 +69,17 @@ public function updateEvent(Request $request, $id)
     {
         try {
             $event = Evenement::findOrFail($id);
-            
+
             // Update event fields
             $event->titre = $request->input('titre') ?? $event->titre;
             $event->type = $request->input('type') ?? $event->type;
             $event->description = $request->input('description') ?? $event->description;
-            $event->image = $request->input('image') ?? $event->image;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('storage/images'), $imageName);
+                $event->image = $imageName;
+            }
             $event->lieu = $request->input('lieu') ?? $event->lieu;
             $event->map_link = $request->input('map_link') ?? $event->map_link;
             $event->date_debut = $request->input('date_debut') ?? $event->date_debut;
@@ -84,7 +87,7 @@ public function updateEvent(Request $request, $id)
             $event->nb_max_participants = $request->input('nb_max_participants') ?? $event->nb_max_participants;
             $event->prix = $request->input('prix') ?? $event->prix;
             $event->save();
-            
+
             // Send notifications using NotificationController
             $notificationController = new NotificationController();
             $notificationRequest = new Request([
@@ -93,7 +96,7 @@ public function updateEvent(Request $request, $id)
                 'organisateur' => Auth::user()->organisateur
             ]);
             $notificationController->EventUpdatedNotification($notificationRequest);
-            
+
             return response()->json($event);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to update event', 'error' => $e->getMessage()], 400);
@@ -103,24 +106,25 @@ public function deleteEvent($id)
     {
         try {
             $event = Evenement::findOrFail($id);
-            
+
             // Store event details before deletion for notification
             $eventName = $event->titre;
-            
+
             // Send notifications using NotificationController
             $notificationController = new NotificationController();
             $notificationRequest = new Request([
                 'id' => $event->id,
-                'name' => $eventName,
+                'name' => $event->titre,
                 'organisateur' => Auth::user()->organisateur
             ]);
-            
+            $notificationController->EventDeletedNotification($notificationRequest);
+
+
             // Delete the event
             $event->delete();
-            
+
             // Send notifications after successful deletion
-            $notificationController->EventDeletedNotification($notificationRequest);
-            
+           
             return response()->json(['message' => 'Event deleted successfully']);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to delete event', 'error' => $e->getMessage()], 400);
@@ -131,7 +135,7 @@ public function deleteEvent($id)
     {
         try {
             $participant = Auth::user()->participant;
-            
+
             // Get upcoming events where the participant has reservations
             $events = Evenement::where('date_debut', '>=', now())
             ->with(['organisateur.user' => function($query) {
@@ -169,8 +173,8 @@ public function deleteEvent($id)
                         'name' => $event->organisateur->user->name,
                         'first_name' => $event->organisateur->user->first_name,
                         'email' => $event->organisateur->user->email,
-                        'avatar' =>  url('storage/'.$event->organisateur->avatar),
-                        'nom_organisation' => $event->organisateur->nom_organisation,
+                        'avatar' => $event->organisateur ? url('storage/'.$event->organisateur->avatar) : null,
+                        'nom_organisation' => $event->organisateur ? $event->organisateur->nom_organisation : null,
                         'site_web_organisation' => $event->organisateur->site_web_organisation
                     ],
                     'prix' => $event->prix,
@@ -196,10 +200,10 @@ public function getEventparticipants()
 
     try {
         $event = Evenement::findOrFail($id);
-        
+
         // Store event details before deletion for notification
         $eventName = $event->titre;
-        
+
         // Send notifications using NotificationController
         $notificationController = new NotificationController();
         $notificationRequest = new Request([
@@ -207,13 +211,13 @@ public function getEventparticipants()
             'name' => $eventName,
             'organisateur' => Auth::user()->organisateur
         ]);
-        
+
         // Delete the event
         $event->delete();
-        
+
         // Send notifications after successful deletion
         $notificationController->EventDeletedNotification($notificationRequest);
-        
+
         return response()->json(['message' => 'Event deleted successfully']);
     } catch (\Exception $e) {
         return response()->json(['message' => 'Failed to delete event', 'error' => $e->getMessage()], 400);
@@ -224,7 +228,7 @@ public function getpastParticipantEvent()
 {
     try {
         $participant = Auth::user()->participant;
-        
+
         // Get upcoming events where the participant has reservations
         $events = Evenement::where('date_debut', '<', now())
         ->whereHas('reservations', function($query) use ($participant) {
@@ -265,12 +269,12 @@ public function getpastParticipantEvent()
                     'name' => $event->organisateur->user->name,
                     'first_name' => $event->organisateur->user->first_name,
                     'email' => $event->organisateur->user->email,
-                    'avatar' => $event->organisateur->avatar,
+                    'avatar' => url('storage/'.$event->organisateur->avatar),
                     'nom_organisation' => $event->organisateur->nom_organisation,
                     'site_web_organisation' => $event->organisateur->site_web_organisation
                 ],
                 'prix' => $event->prix,
-                'image' => $event->image
+                'image' => url('storage/images/'.$event->image)
             ];
         });
 
@@ -284,7 +288,7 @@ public function getpastParticipantEvent()
             'message' => 'Failed to retrieve events',
             'error' => $e->getMessage()
         ], 400);
-    } 
+    }
 
 
 }
@@ -292,7 +296,7 @@ public function getupcomingParticipantEvent()
 {
     try {
         $participant = Auth::user()->participant;
-        
+
         // Get upcoming events where the participant has reservations
         $events = Evenement::where('date_debut', '>=', now())
         ->whereHas('reservations', function($query) use ($participant) {
@@ -352,7 +356,7 @@ public function getupcomingParticipantEvent()
             'message' => 'Failed to retrieve events',
             'error' => $e->getMessage()
         ], 400);
-    } 
+    }
 
 
 }
@@ -361,7 +365,7 @@ public function getupcomingParticipantEvent()
     {
         try {
             $organizer = Auth::user()->organisateur;
-            
+
             // Get all events created by the organizer
             $events = Evenement::where('organisateur_id', $organizer->id)
             ->select(
@@ -373,12 +377,15 @@ public function getupcomingParticipantEvent()
                 'lieu',
                 'nb_max_participants',
                 'nb_participants',
-                'prix'
+                'prix',
+                'image',
+                'type',
+                'map_link'
             )
             ->withCount('reservations')
             ->orderBy('date_debut', 'desc')
             ->get()
-            ->map(function($event) {
+            ->map(function($event) use ($organizer) {
                 return [
                     'id' => $event->id,
                     'title' => $event->titre,
@@ -390,23 +397,29 @@ public function getupcomingParticipantEvent()
                     'current_participants' => $event->nb_participants,
                     'total_reservations' => $event->reservations_count,
                     'available_places' => $event->nb_max_participants - $event->nb_participants,
-                    'status' => now() > $event->date_fin ? 'past' : 
+                    'status' => now() > $event->date_fin ? 'past' :
                               (now() < $event->date_debut ? 'upcoming' : 'ongoing'),
                     'is_full' => $event->nb_participants >= $event->nb_max_participants,
-                    'prix' => $event->prix
-                ];
+                    'prix' => $event->prix,
+                    'avatar' => url('storage/'.$organizer->avatar),
+                    'site_web_organisation' => $organizer->site_web_organisation,
+                    'image' => url('storage/images/'.$event->image),
+                    'type' => $event->type,
+                    'nom_organisation' => $organizer->nom_organisation,
+                    'map_link' => $event->map_link
+                      ];
             });
 
             // Group events by status
-            $groupedEvents = [
-                'upcoming' => $events->where('status', 'upcoming')->values(),
-                'ongoing' => $events->where('status', 'ongoing')->values(),
-                'past' => $events->where('status', 'past')->values()
-            ];
+            // $groupedEvents = [
+            //     'upcoming' => $events->where('status', 'upcoming')->values(),
+            //     'ongoing' => $events->where('status', 'ongoing')->values(),
+            //     'past' => $events->where('status', 'past')->values()
+            // ];
 
             return response()->json([
                 'message' => 'Events retrieved successfully',
-                'data' => $groupedEvents
+                'data' => $events
             ]);
 
         } catch (\Exception $e) {

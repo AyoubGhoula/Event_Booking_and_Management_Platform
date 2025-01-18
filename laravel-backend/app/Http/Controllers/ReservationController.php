@@ -9,6 +9,7 @@ use App\Models\Participant;
 use App\Models\User;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Notification;
 
 
 class ReservationController extends Controller
@@ -27,13 +28,13 @@ class ReservationController extends Controller
 
             // Get the event
             $event = Evenement::findOrFail($request->evenement_id);
-            
+
             // Check if event has enough space
             $currentParticipants = Reservation::where('evenement_id', $event->id)
                                             ->count();
-            
+
             $requestedPlaces = count($request->reservations);
-            
+
             if (($currentParticipants + $requestedPlaces) > $event->nb_max_participants) {
                 return response()->json([
                     'message' => 'Not enough places available',
@@ -46,12 +47,12 @@ class ReservationController extends Controller
             $event->save();
 
             $createdReservations = [];
-            
+
             // Create reservations
             foreach ($request->reservations as $reservationData) {
                 // Generate unique code
                 $uniqueCode = $this->generateUniqueCode();
-                
+
                 $reservation = new Reservation([
                     'participant_id' => Auth::user()->participant->id,
                     'evenement_id' => $event->id,
@@ -60,13 +61,13 @@ class ReservationController extends Controller
                     'numero_telephone' => $reservationData['numero_telephone'],
                     'code_unique' => $uniqueCode
                 ]);
-                
+
                 $reservation->save();
                 $createdReservations[] = $reservation;
             }
 
             // Send notification to event organizer
-            
+
 
             return response()->json([
                 'message' => 'Reservations created successfully',
@@ -80,7 +81,7 @@ class ReservationController extends Controller
                 $event->save();
             }
             return response()->json([
-                'message' => 'Failed to create reservations', 
+                'message' => 'Failed to create reservations',
                 'error' => $e->getMessage()
             ], 400);
         }
@@ -92,7 +93,7 @@ class ReservationController extends Controller
             // Generate a random code (8 characters)
             $code = strtoupper(substr(md5(uniqid()), 0, 8));
         } while (Reservation::where('code_unique', $code)->exists());
-        
+
         return $code;
     }
 
@@ -147,7 +148,7 @@ class ReservationController extends Controller
         try {
             // Get the event
             $event = Evenement::findOrFail($eventId);
-            
+
             // Check if user is the organizer
             $user = Auth::user();
             if (!$user->organisateur || $event->organisateur_id !== $user->organisateur->id) {
@@ -169,22 +170,19 @@ class ReservationController extends Controller
                 ->get();
 
             $eventData = [
-                'event' => [
-                    'id' => $event->id,
-                    'name' => $event->titre,
                     'total_reservations' => $reservations->count(),
                     'max_participants' => $event->nb_max_participants,
-                    'available_places' => $event->nb_max_participants - $reservations->count()
-                ],
-                'reservations' => $reservations->map(function($reservation) {
-                    return [
-                        'id' => $reservation->id,
-                        'full_name' => $reservation->Full_Name,
-                        'email' => $reservation->email,
-                        'phone' => $reservation->numero_telephone,
-                        'code' => $reservation->code_unique,
-                        'reserved_at' => $reservation->created_at->format('Y-m-d H:i:s')
-                    ];
+                    'available_places' => $event->nb_max_participants - $reservations->count(),
+                    'reservations' => $reservations->map(function($reservation) {
+                        return [
+                            'id' => $reservation->id,
+                            'full_name' => $reservation->Full_Name,
+                            'email' => $reservation->email,
+                            'phone' => $reservation->numero_telephone,
+                            'code' => $reservation->code_unique,
+                            'reserved_at' => $reservation->created_at->format('Y-m-d H:i:s'),
+                            'code_unique' => $reservation->code_unique
+                        ];
                 })
             ];
 
@@ -195,7 +193,7 @@ class ReservationController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve event reservations', 
+                'message' => 'Failed to retrieve event reservations',
                 'error' => $e->getMessage()
             ], 400);
         }
@@ -206,7 +204,7 @@ class ReservationController extends Controller
         try {
             // Get the event
             $event = Evenement::findOrFail($eventId);
-            
+
             // Get participant's reservations for this event
             $reservations = Reservation::where('evenement_id', $eventId)
                 ->where('participant_id', Auth::user()->participant->id)
@@ -248,11 +246,11 @@ class ReservationController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve your reservations', 
+                'message' => 'Failed to retrieve your reservations',
                 'error' => $e->getMessage()
             ], 400);
         }
-        
+
     }
 
     public function getEventParticipants($eventId)
@@ -260,13 +258,13 @@ class ReservationController extends Controller
         try {
             // Get the event
             $event = Evenement::findOrFail($eventId);
-    
+
             // Check if the authenticated user is the organizer of the event
             $user = Auth::user();
             if (!$user->organisateur || $event->organisateur_id !== $user->organisateur->id) {
                 return response()->json(['message' => 'Unauthorized to view these participants'], 403);
             }
-    
+
             // Get unique participants for this event along with their user data
             $participants = Reservation::where('evenement_id', $eventId)
                 ->with('participant.user') // Eager load participant and user relationships
@@ -275,7 +273,7 @@ class ReservationController extends Controller
                 ->map(function ($reservation) {
                     $participant = $reservation->participant;
                     $user = $participant->user;
-    
+
                     return [
                         'participant_id' => $participant->id,
                         'name' => $user->name,
@@ -283,7 +281,7 @@ class ReservationController extends Controller
                         'email' => $user->email
                     ];
                 });
-    
+
             // Prepare the response data
             $participantData = [
                 'event' => [
@@ -293,12 +291,12 @@ class ReservationController extends Controller
                 ],
                 'participants' => $participants
             ];
-    
+
             return response()->json([
                 'message' => 'Event participants retrieved successfully',
                 'data' => $participantData
             ], 200);
-    
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to retrieve event participants',
@@ -306,5 +304,36 @@ class ReservationController extends Controller
             ], 400);
         }
     }
-    
+    public function cancelResOrg($idrev){
+        try {
+            // Get the reservation
+            $reservation = Reservation::findOrFail($idrev);
+            // Get event details before canceling
+            $event = $reservation->evenement;
+            // sent a mail to the participant
+            $participant = Participant::findOrFail($reservation->participant_id);
+            $organisateur = $event->organisateur;
+
+            // Create a notification for the participant
+            Notification::create([
+                'name_evenement' => $event->titre,
+                'type' => 'Reservation Cancelled',
+                'contenu' => 'Your reservation for the event: ' . $event->titre . ' has been cancelled for ' . $reservation->Full_Name . ' with email: ' . $reservation->email . ' and phone number: ' . $reservation->numero_telephone,
+                'envoye_le' => now(),
+                'destinataire_id' => $organisateur->id, // Ensure the correct destinataire_id is used
+                'participant_id' => $reservation->participant_id
+            ]);
+            // Delete the reservation
+            $reservation->delete();
+            // Update event participants count
+            $event->nb_participants = $event->nb_participants - 1;
+            $event->save();
+
+            return response()->json([
+                'message' => 'Reservation cancelled successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to cancel reservation', 'error' => $e->getMessage()], 400);
+        }
+    }
 }

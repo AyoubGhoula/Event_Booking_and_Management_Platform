@@ -29,69 +29,69 @@ interface Event {
 }
   
 const DiscoverEvents = () => {
-   const events:Event[] = [
-      {
-         id:10,
-        name: 'INSAT Celebrates Cinema',
-        date: 'dec 11, 2024',
-        description: 'A conference showcasing the latest in tech innovation.',
-        type: 'FESTIVAL',
-        location: 'San Francisco, CA',
-        image:'/image/Image2.jpg'
-      },
-      {
-        id:44,
-       name: 'INSAT Célèbre le Cinéma',
-       date: 'May 10, 2024',
-       description: 'A conference showcasing the latest in tech innovation.',
-       type: 'Conference',
-       location: 'San Francisco, CA',
-       image:'/image/Image2.jpg'
-     },
-     {
-        id:47,
-       name: 'Tech Conference 2024',
-       date: 'May 10, 2024',
-       description: 'A conference showcasing the latest in tech innovation.',
-       type: 'Conference',
-       location: 'San Francisco, CA',
-       image:'/image/Image2.jpg'
-     },
-      {
-         id:9,
-        name: 'Music Festival 2024',
-        date: 'April 22, 2024',
-        description: 'Join us for an epic outdoor music festival.',
-        type: 'Festival',
-        location: 'Los Angeles, CA',
-        image:'/image/Image2.jpg',
-      },
-      {
-         id:8,
-        name: 'Art Exhibition',
-        date: 'May 10, 2024',
-        description: 'An exhibition of modern art and installations.',
-        type: 'Exhibition',
-        location: 'New York, NY',
-        image:'/image/10e5ed3a4dc33fbd3b146437610a99b10c0.webp',
-      },
-      {
-         id:7,
-        name: 'Music Festival 2024',
-        date: 'April 22, 2024',
-        description: 'Join us for an epic outdoor music festival.',
-        type: 'Festival',
-        location: 'Los Angeles, CA',
-      },
-      {
-         id:6,
-        name: 'Music Festival 2024',
-        date: 'April 22, 2024',
-        description: 'Join us for an epic outdoor music festival.',
-        type: 'Festival',
-        location: 'Los Angeles, CA',
-      },
-    ];
+  //  const events:Event[] = [
+  //     {
+  //        id:10,
+  //       name: 'INSAT Celebrates Cinema',
+  //       date: 'dec 11, 2024',
+  //       description: 'A conference showcasing the latest in tech innovation.',
+  //       type: 'FESTIVAL',
+  //       location: 'San Francisco, CA',
+  //       image:'/image/Image2.jpg'
+  //     },
+  //     {
+  //       id:44,
+  //      name: 'INSAT Célèbre le Cinéma',
+  //      date: 'May 10, 2024',
+  //      description: 'A conference showcasing the latest in tech innovation.',
+  //      type: 'Conference',
+  //      location: 'San Francisco, CA',
+  //      image:'/image/Image2.jpg'
+  //    },
+  //    {
+  //       id:47,
+  //      name: 'Tech Conference 2024',
+  //      date: 'May 10, 2024',
+  //      description: 'A conference showcasing the latest in tech innovation.',
+  //      type: 'Conference',
+  //      location: 'San Francisco, CA',
+  //      image:'/image/Image2.jpg'
+  //    },
+  //     {
+  //        id:9,
+  //       name: 'Music Festival 2024',
+  //       date: 'April 22, 2024',
+  //       description: 'Join us for an epic outdoor music festival.',
+  //       type: 'Festival',
+  //       location: 'Los Angeles, CA',
+  //       image:'/image/Image2.jpg',
+  //     },
+  //     {
+  //        id:8,
+  //       name: 'Art Exhibition',
+  //       date: 'May 10, 2024',
+  //       description: 'An exhibition of modern art and installations.',
+  //       type: 'Exhibition',
+  //       location: 'New York, NY',
+  //       image:'/image/10e5ed3a4dc33fbd3b146437610a99b10c0.webp',
+  //     },
+  //     {
+  //        id:7,
+  //       name: 'Music Festival 2024',
+  //       date: 'April 22, 2024',
+  //       description: 'Join us for an epic outdoor music festival.',
+  //       type: 'Festival',
+  //       location: 'Los Angeles, CA',
+  //     },
+  //     {
+  //        id:6,
+  //       name: 'Music Festival 2024',
+  //       date: 'April 22, 2024',
+  //       description: 'Join us for an epic outdoor music festival.',
+  //       type: 'Festival',
+  //       location: 'Los Angeles, CA',
+  //     },
+  //   ];
   const [searchTitle, setSearchTitle] = useState<string>("");
   const [searchType, setSearchType] = useState<string>("");
   const [searchDate, setSearchDate] = useState<string>("");
@@ -104,6 +104,110 @@ const DiscoverEvents = () => {
   const [gradient, setGradient] = useState("");
   const imageRef = useRef<HTMLImageElement>(null);
 
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [userDetails, setUserDetails] = useState({
+      name: '',
+      first_name: '',
+      email: '',
+      phone: '',
+      // Add other user details as needed
+    });
+
+  const fetchUserDetails = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await axios.get('http://localhost:8000/api/user', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      setUserDetails(response.data);
+    } catch (error) {
+      console.error('Failed to fetch user details:', error);
+    }
+  };
+
+  const handleUpdateUser = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await axios.put('http://localhost:8000/api/user', userDetails, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.data.message) {
+        showNotification('success', response.data.message);
+        setShowProfileModal(false);
+      }
+    } catch (error) {
+      console.error('Failed to update user:', error);
+      showNotification('error', 'Failed to update user details');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      await axios.post('http://localhost:8000/api/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      localStorage.removeItem('access_token');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Failed to logout:', error);
+      showNotification('error', 'Failed to logout');
+    }
+  };
+
+  const [passwordDetails, setPasswordDetails] = useState({
+    current_password: '',
+    new_password: '',
+    confirm_new_password: '',
+  });
+
+  const handleChangePassword = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await axios.put('http://localhost:8000/api/user/change-password', passwordDetails, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.data.message) {
+        showNotification('success', response.data.message);
+        setPasswordDetails({
+          current_password: '',
+          new_password: '',
+          confirm_new_password: '',
+        });
+      }
+    } catch (error) {
+      console.error('Failed to change password:', error);
+      showNotification('error', 'Failed to change password');
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -163,7 +267,7 @@ useEffect(() => {
     };
 
     fetchEvents();
-}, []); // Fetch only once when the component mounts
+}, []); 
 useEffect(() => {
   const filteredEvents = allEvents.filter((event) => {
       return (
@@ -379,7 +483,10 @@ const groupAndSetEvents = (events: Event[]) => {
 </ul>
 <div className="absolute inset-x-0 bottom-0 h-8 border-t pb-10 mb-4 pt-3 border-gray-700">
       <motion.a   className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"data-tooltip-id="tooltip-5"
-          data-tooltip-content="Profile" whileHover={{ scale: 1.01 }}>
+          data-tooltip-content="Profile" whileHover={{ scale: 1.01 }} onClick={() => {
+            fetchUserDetails();
+            setShowProfileModal(true);
+          }}>
       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
             <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
          </svg>
@@ -461,7 +568,10 @@ const groupAndSetEvents = (events: Event[]) => {
 </ul>
 <div className="absolute  bottom-0 h-8 border-t pb-10 mb-4 pt-3 border-gray-700">
       <motion.a   className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"data-tooltip-id="tooltip-5"
-          data-tooltip-content="Profile" whileHover={{ scale: 1.01 }}>
+          data-tooltip-content="Profile" whileHover={{ scale: 1.01 }} onClick={() => {
+            fetchUserDetails();
+            setShowProfileModal(true);
+          }}>
       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
             <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
          </svg>
@@ -528,7 +638,7 @@ const groupAndSetEvents = (events: Event[]) => {
       {/* Date Header */}
       <div className="text-2xl font-semibold">{date}</div>
       <motion.div>
-        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 p-4 px-14">
+        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 p-4 px-8">
           {events.length > 0 ? (
             events.map((event) => (
               <motion.a
@@ -549,7 +659,7 @@ const groupAndSetEvents = (events: Event[]) => {
                   <h4 className="text-base font-medium scroll-m-20 text-muted-foreground text-cyan-50">
                     {new Date(event.start_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                   </h4>
-                  <h5 className=" text-cyan-50 opacity-5">________________________________________</h5>
+                  <h5 className=" text-cyan-50 opacity-5">___________________________________</h5>
                   <h2 className="font-semibold tracking-tight text-cyan-50 md:text-lg scroll-m-20 md:font-medium first-letter:uppercase">
                     {event.title}
                   </h2>
@@ -882,9 +992,116 @@ const groupAndSetEvents = (events: Event[]) => {
 
       </div> 
     </div>
-    </div>
-
-  );
+    
+    <AnimatePresence>
+  {showProfileModal && (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className=" p-6 rounded-lg shadow-lg w-full max-w-md relative bg-gray-800 bg-opacity-55 backdrop-blur-lg  border border-gray-700  ">
+      <button
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            onClick={() => {
+            fetchUserDetails();
+            setShowProfileModal(false);
+          }}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        <h2 className="text-2xl font-bold mb-4">Profile</h2>
+        <div className="mb-4">
+          <label className="block text-gray-500"> First Name</label>
+          <input
+            type="text"
+            value={userDetails.first_name}
+            onChange={(e) => setUserDetails({ ...userDetails, first_name: e.target.value })}
+            className="w-full p-2 border bg-gray-800 bg-opacity-70 border-gray-600 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-500">Name</label>
+          <input
+            type="text"
+            value={userDetails.name}
+            onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
+            className="w-full p-2 border bg-gray-800 bg-opacity-70 border-gray-600 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-500">Email</label>
+          <input
+            type="email"
+            value={userDetails.email}
+            onChange={(e) => setUserDetails({ ...userDetails, email: e.target.value })}
+            className="w-full p-2 border bg-gray-800 bg-opacity-70 border-gray-600 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-500">Phone</label>
+          <input
+            type="text"
+            value={userDetails.phone}
+            onChange={(e) => setUserDetails({ ...userDetails, phone: e.target.value })}
+            className="w-full p-2 border bg-gray-800 bg-opacity-70 border-gray-600 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-500">Current Password</label>
+          <input
+            type="password"
+            value={passwordDetails.current_password}
+            onChange={(e) => setPasswordDetails({ ...passwordDetails, current_password: e.target.value })}
+            className="w-full p-2 border bg-gray-800 bg-opacity-70 border-gray-600 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-500">New Password</label>
+          <input
+            type="password"
+            value={passwordDetails.new_password}
+            onChange={(e) => setPasswordDetails({ ...passwordDetails, new_password: e.target.value })}
+            className="w-full p-2 border bg-gray-800 bg-opacity-70 border-gray-600 rounded"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-500">Confirm New Password</label>
+          <input
+            type="password"
+            value={passwordDetails.confirm_new_password}
+            onChange={(e) => setPasswordDetails({ ...passwordDetails, confirm_new_password: e.target.value })}
+            className="w-full p-2 border bg-gray-800 bg-opacity-70 border-gray-600 rounded"
+          />
+        </div>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={handleUpdateUser}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Update
+          </button>
+          <button
+            onClick={handleChangePassword}
+            className="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Change Password
+          </button>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
+  </div>);
 };
 
 export default DiscoverEvents;

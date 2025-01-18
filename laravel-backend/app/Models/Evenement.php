@@ -32,4 +32,8 @@ class Evenement extends Model
         return $this->hasMany(Declaration::class);
     }
 
+    public function notifications() {
+        return $this->hasMany(Notification::class);
+    }
+    
 }

@@ -24,4 +24,7 @@ class Organisateur extends Model
         return $this->hasMany(Evenement::class);
     }
 
+    public function notifications() {
+        return $this->hasMany(Notification::class);
+    }
 }

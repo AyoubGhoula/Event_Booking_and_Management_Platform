@@ -333,15 +333,15 @@ export default function SignUp() {
                             </div>
                         </div>
                     )}
-
+                    <div className='items-center justify-center flex'>
                     <button
                         type="submit"
-                        className="w-full px-12 py-3 m-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                        className="  w-full items-center px-12  py-3 m-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
                     >
                         Create an account
                     </button>
-
-                    <p className="text-sm font-light text-gray-500 dark:text-gray-400 m-2">
+                    </div>
+                    <p className="text-sm font-light text-gray-500 dark:text-gray-400 m-2 mb-8">
                         Already have an account?{" "}
                         <Link href="/sign-in" className="font-medium text-blue-500 hover:underline">
                             Login here

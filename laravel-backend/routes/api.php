@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrganizerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,6 +39,10 @@ Route::middleware('auth:sanctum')->delete('deleteEvent/{id}', [EventController::
 
 Route::middleware('auth:sanctum')->get('/user',[AuthController::class, 'getUser'] );
 
+Route::middleware('auth:sanctum')->put('/user', [AuthController::class, 'updateUser']);
+
+Route::middleware('auth:sanctum')->put('/user/change-password', [AuthController::class, 'changePassword']);
+
 Route::get('/allevents', [AuthController::class, 'getevents']);
 
 Route::get('/search-events', [AuthController::class, 'search']);
@@ -55,6 +61,8 @@ Route::middleware('auth:sanctum')->get('organizer/reservations',[ReservationCont
 
 Route::middleware('auth:sanctum')->get('participant/upcoming-reservations',[EventController::class, 'getupcomingParticipantEvent']);
 
+Route::middleware('auth:sanctum')->get('participant/past-reservations',[EventController::class, 'getPastParticipantEvent']);
+
 Route::middleware('auth:sanctum')->get('event/{eventId}/all-reservations',[ReservationController::class, 'getAllEventReservations']);
 
 Route::middleware('auth:sanctum')->get('event/{eventId}/my-reservations',[ReservationController::class, 'getParticipantEventReservations']);
@@ -65,6 +73,12 @@ Route::middleware('auth:sanctum')->get('participant/my-events',[EventController:
 
 Route::middleware('auth:sanctum')->get('organizer/my-events',[EventController::class, 'getOrganizerEvents']);
 
+Route::middleware('auth:sanctum')->post('organizer/{idrev}/cancelResOrg',[ReservationController::class, 'cancelResOrg']);
+
+Route::middleware('auth:sanctum')->get('organizer/info', [OrganizerController::class, 'getOrganizerInfo']);
+
 // Email Verification Routes
 Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
 Route::post('/resend-verification', [AuthController::class, 'resendVerificationCode']);
+
+Route::middleware('auth:sanctum')->get('getNotifications', [NotificationController::class, 'getNotifications']);
