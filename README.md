@@ -60,4 +60,4 @@ For questions or support, feel free to reach out:
 
 Developer: Ayoub Ghoula
 
-Email: ayoubghoula24@gmail.com
+Email: ayoubghoula40@gmail.com
