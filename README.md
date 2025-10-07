@@ -1,63 +1,110 @@
 # EventMaster
 
-**EventMaster** is a modern event management platform that allows users to seamlessly create, manage, and participate in various events. Designed with cutting-edge technologies like **Laravel**, **React.js**, and **TypeScript**, EventMaster ensures a secure, scalable, and user-friendly experience.
+![EventMaster Banner](Conception%20de%20Plateforme%20de%20R%C3%A9servation%20et%20de%20Gestion%20d'%C3%89v%C3%A9nements/img_de_project/Home.png)
 
-## Features
+**EventMaster** is a modern event management platform enabling users to create, manage, and participate in diverse events with ease. Built with **Laravel** and **React**, it delivers a seamless and interactive experience.
 
-- **User Roles**:  
-  - Organizers: Create and manage events.  
-  - Participants: Browse and join events.  
+---
 
-- **Event Management**:  
-  - Create, update, and delete events.  
-  - Add and display event images.  
+## 🚀 Features
 
-- **Search and Filters**:  
-  - Find events by title, date, or type.  
-  - Separate views for old and upcoming events.  
+- **User Roles**
+  - **Organizers:** Create and manage events
+  - **Participants:** Browse and join events
 
-- **Secure Authentication**:  
-  - Token-based authentication with auto-expiry after 30 minutes of inactivity.  
+- **Event Management**
+  - Create, update, and delete events
+  - Upload and display event images
 
-- **Interactive UI**:  
-  - Popup for detailed event information.  
-  - Smooth animations using `react-pip`.  
-  - Tooltips for better user guidance (`react-tooltip`).  
+- **Search & Filters**
+  - Search by title, date, or type
+  - View past and upcoming events separately
 
-## Tech Stack
+- **Secure Authentication**
+  - JWT-based authentication with auto-expiry after 30 minutes of inactivity
 
-- **Frontend**:  
-  - React.js  
-  - Tailwind CSS  
-  - TypeScript  
+- **Interactive UI**
+  - Event detail popups
+  - Smooth animations (`react-pip`)
+  - Tooltips with `react-tooltip`
 
-- **Backend**:  
-  - Laravel  
-  - MySQL  
+---
 
-- **Other Tools**:  
-  - React Tooltip for enhanced UI  
-  - Animations with `react-pip`  
-  - JWT for secure API authentication  
+## 🛠️ Tech Stack
 
-## Installation
+**Frontend:**
+- React.js
+- Tailwind CSS
+- TypeScript
+
+**Backend:**
+- Laravel
+- MySQL
+
+**Other Tools:**
+- React Tooltip
+- Animations with `react-pip`
+- JWT for secure API authentication
+
+---
+
+## 📸 Screenshots
+
+![Details](Conception%20de%20Plateforme%20de%20R%C3%A9servation%20et%20de%20Gestion%20d'%C3%89v%C3%A9nements/img_de_project/Capture%20d%E2%80%99%C3%A9cran%202025-01-19%20105259.png) ![Create](Conception%20de%20Plateforme%20de%20R%C3%A9servation%20et%20de%20Gestion%20d'%C3%89v%C3%A9nements/img_de_project/Capture%20d%E2%80%99%C3%A9cran%202025-01-19%20112240.png)   
+![4](Conception%20de%20Plateforme%20de%20R%C3%A9servation%20et%20de%20Gestion%20d'%C3%89v%C3%A9nements/img_de_project/Capture%20d%E2%80%99%C3%A9cran%202025-01-19%20112321.png)
+![5](Conception%20de%20Plateforme%20de%20R%C3%A9servation%20et%20de%20Gestion%20d'%C3%89v%C3%A9nements/img_de_project/Capture%20d%E2%80%99%C3%A9cran%202025-01-19%20112414.png)
+![3](Conception%20de%20Plateforme%20de%20R%C3%A9servation%20et%20de%20Gestion%20d'%C3%89v%C3%A9nements/img_de_project/Capture%20d%E2%80%99%C3%A9cran%202025-01-19%20113131.png)
+![6](Conception%20de%20Plateforme%20de%20R%C3%A9servation%20et%20de%20Gestion%20d'%C3%89v%C3%A9nements/img_de_project/Capture%20d%E2%80%99%C3%A9cran%202025-01-19%20113014.png)
+
+
+---
+
+## 🚦 Getting Started
 
 ### Prerequisites
 
-- Node.js (v16+ recommended)  
-- PHP (v8+ recommended)  
-- Composer  
-- MySQL  
+- Node.js (v16+ recommended)
+- PHP (v8+ recommended)
+- Composer
+- MySQL
 
+### Installation
 
-# License
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/AyoubGhoula/Event_Booking_and_Management_Platform.git
+   ```
+2. **Setup Backend**
+   ```bash
+   cd backend
+   composer install
+   cp .env.example .env
+   # Configure your .env file (DB credentials etc)
+   php artisan migrate
+   php artisan serve
+   ```
+3. **Setup Frontend**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-This project is licensed under the **MIT License** .
+---
 
-# Contact
+## 📄 License
 
-For questions or support, feel free to reach out:
+This project is licensed under the **MIT License**.
 
-Developer: Ayoub Ghoula
+---
 
-Email: ayoubghoula40@gmail.com
+## 📬 Contact
+
+For questions or support, reach out:
+
+- **Developer:** Ayoub Ghoula  
+- **Email:** [ayoubghoula40@gmail.com](mailto:ayoubghoula40@gmail.com)
+
+---
+
+_Star ⭐️ this repo if you like it!_
